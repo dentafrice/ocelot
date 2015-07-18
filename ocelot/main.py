@@ -1,12 +1,17 @@
 from ocelot.pipeline.inputs import URLInput
+from ocelot.pipeline.operations import XMLParseOperation
+from ocelot.pipeline.operations import XMLRSSParseOperation
 from ocelot.pipeline.outputs import LogOutput
 
 if __name__ == '__main__':
-    l = LogOutput('xkcd')
+    URLInput(
+        output=XMLParseOperation(
+            output=XMLRSSParseOperation(
+                output=LogOutput(
+                    log_name='xkcd',
+                ),
+            ),
+        ),
 
-    u = URLInput(
-        output=l,
         url='http://xkcd.com/rss.xml',
-    )
-
-    u.run()
+    ).run()
