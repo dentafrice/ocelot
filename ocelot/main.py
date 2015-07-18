@@ -1,5 +1,6 @@
 from ocelot.pipeline.inputs import URLInput
 from ocelot.pipeline.operations import DictPatternExtractor
+from ocelot.pipeline.operations import MessageFormatOperation
 from ocelot.pipeline.operations import PluckOperation
 from ocelot.pipeline.operations import XMLParseOperation
 from ocelot.pipeline.operations import XMLRSSParseOperation
@@ -11,8 +12,19 @@ if __name__ == '__main__':
             output=XMLRSSParseOperation(
                 output=PluckOperation(
                     output=DictPatternExtractor(
-                        output=LogOutput(
-                            log_name='xkcd',
+                        output=MessageFormatOperation(
+                            output=LogOutput(
+                                log_name='xkcd',
+                            ),
+
+                            message="""
+XKCD Lineup:
+----
+{% for item in data %}
+{{item.title}}
+{{item.description}}
+{% endfor %}
+""",
                         ),
 
                         config={
