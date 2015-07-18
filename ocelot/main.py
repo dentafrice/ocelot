@@ -1,4 +1,5 @@
 from ocelot.pipeline.inputs import URLInput
+from ocelot.pipeline.operations import DictPatternExtractor
 from ocelot.pipeline.operations import PluckOperation
 from ocelot.pipeline.operations import XMLParseOperation
 from ocelot.pipeline.operations import XMLRSSParseOperation
@@ -9,8 +10,14 @@ if __name__ == '__main__':
         output=XMLParseOperation(
             output=XMLRSSParseOperation(
                 output=PluckOperation(
-                    output=LogOutput(
-                        log_name='xkcd',
+                    output=DictPatternExtractor(
+                        output=LogOutput(
+                            log_name='xkcd',
+                        ),
+
+                        config={
+                            'description': 'src="(.*?)"',
+                        },
                     ),
 
                     fields=['title', 'description'],
