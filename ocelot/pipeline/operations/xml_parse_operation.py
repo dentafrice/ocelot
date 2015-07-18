@@ -6,6 +6,7 @@ class XMLParseOperation(object):
         self.output = output
 
     def write(self, data):
-        self.output.write(
-            ET.fromstring(data),
-        )
+        for item in data:
+            self.output.write(
+                [ET.fromstring(item)],
+            )

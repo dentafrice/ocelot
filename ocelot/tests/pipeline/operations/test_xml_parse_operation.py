@@ -24,9 +24,9 @@ class TestXMLParseOperation(TestCase):
             output=FakeOutput(),
         )
 
-        xml.write(FAKE_XML)
+        xml.write([FAKE_XML])
         self.assertTrue(mock_output_write.called)
 
-        parsed_element = mock_output_write.call_args[0][0]
+        parsed_element = mock_output_write.call_args[0][0][0]
         self.assertIsInstance(parsed_element, Element)
         self.assertEquals(parsed_element.tag, 'root')

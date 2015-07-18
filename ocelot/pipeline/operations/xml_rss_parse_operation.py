@@ -3,9 +3,13 @@ class XMLRSSParseOperation(object):
         self.output = output
 
     def write(self, data):
-        return self.output.write(
-            map(self._convert_item_to_dict, self._find_items(data)),
-        )
+        for item in data:
+            return self.output.write([
+                map(
+                    self._convert_item_to_dict,
+                    self._find_items(item),
+                ),
+            ])
 
     def _find_items(self, root_element):
         return root_element.findall('.//item')

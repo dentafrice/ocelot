@@ -8,7 +8,7 @@ class URLInput(object):
 
     def run(self):
         self.output.write(
-            self._make_request()
+            [self._make_request()],
         )
 
     def _make_request(self):

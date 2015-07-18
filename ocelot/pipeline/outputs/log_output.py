@@ -10,4 +10,5 @@ class LogOutput(object):
         return 'ocelot.{}'.format(self._log_name)
 
     def write(self, data):
-        logging.getLogger(self.log_name).info(data)
+        for item in data:
+            logging.getLogger(self.log_name).info(item)

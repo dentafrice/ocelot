@@ -45,7 +45,7 @@ class TestURLInput(TestCase):
         )
 
         url_input.run()
-        mock_write.assert_called_once_with('foobar')
+        mock_write.assert_called_once_with(['foobar'])
 
     @mock.patch('requests.get')
     def test_run_calls_provided_url(self, mock_get):

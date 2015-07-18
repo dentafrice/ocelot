@@ -33,12 +33,13 @@ class FakeOutput(object):
 class TestXMLRSSParseOperation(TestCase):
     @mock.patch.object(FakeOutput, 'write')
     def test_write_formatted_items(self, mock_output_write):
+        """Test that items are convert into dicts from the XML tree."""
         xml = XMLRSSParseOperation(
             output=FakeOutput(),
         )
 
-        xml.write(FAKE_PARSED_XML)
-        mock_output_write.assert_called_once_with([
+        xml.write([FAKE_PARSED_XML])
+        mock_output_write.assert_called_once_with([[
             {'title': 'Fake Thing', 'link': 'google.com'},
             {'title': 'Fake Thing 2', 'link': 'google2.com'},
-        ])
+        ]])

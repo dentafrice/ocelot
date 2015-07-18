@@ -25,6 +25,6 @@ class TestLogOutput(TestCase):
             log_name='foobar.baz',
         )
 
-        log_output.write(FAKE_DATA)
+        log_output.write([FAKE_DATA])
         mock_get_logger.assert_called_once_with(log_output.log_name)
         fake_logger.info.assert_called_once_with(FAKE_DATA)
