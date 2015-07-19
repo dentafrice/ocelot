@@ -2,17 +2,16 @@ from ocelot.pipeline.channels.operations.base_operation import BaseOperation
 
 
 class XMLRSSParseOperation(BaseOperation):
-    def _process(self, data):
+    def process(self, data):
         """Converts an Element into an array of dicts representing
         <item> elements.
 
         :param data:
+        :returns list: list of dicts representing <item>s.
         """
-        return self._write(
-            map(
-                self._convert_item_to_dict,
-                self._find_items(data),
-            )
+        return map(
+            self._convert_item_to_dict,
+            self._find_items(data),
         )
 
     def _find_items(self, root_element):

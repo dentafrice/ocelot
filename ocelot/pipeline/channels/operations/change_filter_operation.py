@@ -3,6 +3,7 @@ import pickle
 
 from ocelot.lib import cache
 from ocelot.pipeline.channels.operations.base_operation import BaseOperation
+from ocelot.pipeline.exceptions import StopProcessingException
 
 
 class ChangeFilterOperation(BaseOperation):
@@ -11,13 +12,16 @@ class ChangeFilterOperation(BaseOperation):
 
         super(ChangeFilterOperation, self).__init__(*args, **kwargs)
 
-    def _process(self, data):
+    def process(self, data):
         """Check to see if the data has changed.
 
         :param data:
+        :returns: data if filter passes
         """
         if self._allow(data):
-            self._write(data)
+            return data
+
+        raise StopProcessingException('ChangeFilter has detected no change.')
 
     def _allow(self, data):
         """Returns whether or not to allow this data to pass the filter.

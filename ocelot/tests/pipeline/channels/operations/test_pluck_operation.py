@@ -1,5 +1,3 @@
-import mock
-
 from ocelot.pipeline.channels.operations import PluckOperation
 from ocelot.tests import TestCase
 
@@ -9,37 +7,28 @@ FAKE_DICTS = [
 ]
 
 
-class FakeOutput(object):
-    def write(self, *args, **kwargs):
-        pass
-
-
 class TestPluckOperation(TestCase):
-    @mock.patch.object(FakeOutput, 'write')
-    def test_write_plucked_fields(self, mock_output_write):
-        """Test that write will write the plucked fields to the output."""
+    def test_process_plucked_fields(self):
+        """Test that process will process the plucked fields to the output."""
         pluck = PluckOperation(
-            output=FakeOutput(),
             fields=['title', 'description'],
         )
 
-        pluck.write([FAKE_DICTS])
+        self.assertEquals(
+            pluck.process(FAKE_DICTS),
+            [
+                {'title': 't1', 'description': 'd1'},
+                {'title': 't2', 'description': 'd2'},
+            ]
+        )
 
-        mock_output_write.assert_called_once_with([[
-            {'title': 't1', 'description': 'd1'},
-            {'title': 't2', 'description': 'd2'},
-        ]])
-
-    @mock.patch.object(FakeOutput, 'write')
-    def test_write_single_dict(self, mock_output_write):
-        """Test that write works with a single dict instead of a list."""
+    def test_process_single_dict(self):
+        """Test that process works with a single dict instead of a list."""
         pluck = PluckOperation(
-            output=FakeOutput(),
             fields=['title', 'description'],
         )
 
-        pluck.write([FAKE_DICTS[0]])
-
-        mock_output_write.assert_called_once_with([
+        self.assertEquals(
+            pluck.process(FAKE_DICTS[0]),
             {'title': 't1', 'description': 'd1'},
-        ])
+        )

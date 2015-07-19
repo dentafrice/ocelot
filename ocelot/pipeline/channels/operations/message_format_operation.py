@@ -11,10 +11,11 @@ class MessageFormatOperation(BaseOperation):
 
         super(MessageFormatOperation, self).__init__(*args, **kwargs)
 
-    def _process(self, data):
+    def process(self, data):
         """Render message with provided data.
 
         :param data:
+        :returns str message:
         """
         message_environment = Environment(loader=DictLoader({
             FAKE_MESSAGE_NAME: self.message_value,
@@ -22,8 +23,6 @@ class MessageFormatOperation(BaseOperation):
 
         message = message_environment.get_template(FAKE_MESSAGE_NAME)
 
-        self._write(
-            message.render({
-                'data': data,
-            }),
-        )
+        return message.render({
+            'data': data,
+        })

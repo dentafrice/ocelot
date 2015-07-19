@@ -10,19 +10,16 @@ class DictPatternExtractor(BaseOperation):
 
         super(DictPatternExtractor, self).__init__(*args, **kwargs)
 
-    def _process(self, data):
+    def process(self, data):
         """Extract data by pattern from dict fields.
 
-        :param data:
+        :param dict data:
+        :returns dict:
         """
         if isinstance(data, list):
-            self._write(
-                map(self._extract, data)
-            )
+            return map(self._extract, data)
         else:
-            self._write(
-                self._extract(data)
-            )
+            return self._extract(data)
 
     def _extract(self, item):
         """Extracts the data from the fields via the provided config.

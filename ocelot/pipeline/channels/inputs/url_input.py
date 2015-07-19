@@ -9,12 +9,14 @@ class URLInput(BaseInput):
 
         super(URLInput, self).__init__(*args, **kwargs)
 
-    def run(self):
+    def process(self, data):
         """Makes the HTTP request to the provided URL and writes it to the
-        output."""
-        self._write(
-            self._make_request()
-        )
+        output.
+
+        :param data:
+        :returns str: HTTP response
+        """
+        return self._make_request()
 
     def _make_request(self):
         """Makes an HTTP request to the provided URL and returns the raw content.

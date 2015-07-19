@@ -2,6 +2,10 @@ from ocelot.pipeline.channels.output_mixin import OutputMixin
 
 
 class BaseInput(OutputMixin):
-    def run(self):
-        """Runs the input and writes the data to the output."""
+    def process(self, data):
+        """Runs the input and writes the data to the output.
+
+        :param data:
+        :returns: response
+        """
         raise NotImplementedError

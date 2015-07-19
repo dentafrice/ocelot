@@ -7,19 +7,16 @@ class PluckOperation(BaseOperation):
 
         super(PluckOperation, self).__init__(*args, **kwargs)
 
-    def _process(self, data):
+    def process(self, data):
         """Pluck fields from a dict.
 
-        :param data:
+        :param dict data:
+        :returns dict: response
         """
         if isinstance(data, list):
-            self._write(
-                map(self._pluck, data),
-            )
+            return map(self._pluck, data)
         else:
-            self._write(
-                self._pluck(data),
-            )
+            return self._pluck(data)
 
     def _pluck(self, item):
         """Plucks fields out of a dictionary.

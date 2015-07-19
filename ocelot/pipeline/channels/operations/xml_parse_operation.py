@@ -4,11 +4,10 @@ from ocelot.pipeline.channels.operations.base_operation import BaseOperation
 
 
 class XMLParseOperation(BaseOperation):
-    def _process(self, data):
+    def process(self, data):
         """Parse a string of XML into an ElementTree Element.
 
         :param data:
+        :returns Element:
         """
-        self._write(
-            ET.fromstring(data),
-        )
+        return ET.fromstring(data)

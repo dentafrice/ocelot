@@ -17,7 +17,7 @@ class LogOutput(BaseOutput):
         """
         return 'ocelot.{}'.format(self._log_name)
 
-    def _process(self, data):
+    def process(self, data):
         """Logs the data to a logger.
 
         :param data:
