@@ -2,9 +2,10 @@ from ocelot.pipeline.operations.base_operation import BaseOperation
 
 
 class PluckOperation(BaseOperation):
-    def __init__(self, output, fields, *args, **kwargs):
-        self.output = output
+    def __init__(self, fields, *args, **kwargs):
         self.fields = fields
+
+        super(PluckOperation, self).__init__(*args, **kwargs)
 
     def _process(self, data):
         """Pluck fields from a dict.
