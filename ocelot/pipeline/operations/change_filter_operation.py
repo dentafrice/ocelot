@@ -2,24 +2,22 @@ import hashlib
 import pickle
 
 from ocelot.lib import cache
+from ocelot.pipeline.operations.base_operation import BaseOperation
 
 
-class ChangeFilterOperation(object):
-    def __init__(self, output, identifier, *args, **kwargs):
-        self.output = output
+class ChangeFilterOperation(BaseOperation):
+    def __init__(self, identifier, *args, **kwargs):
         self.identifier = identifier
 
-    def write(self, data):
-        """Accepts and filters data from upstream.
+        super(ChangeFilterOperation, self).__init__(*args, **kwargs)
 
-        If the data has changed since last time, it will be written
-        to the provided output, otherwise it will stop here.
+    def _process(self, data):
+        """Check to see if the data has changed.
 
         :param data:
         """
-        for item in data:
-            if self._allow(item):
-                self.output.write([item])
+        if self._allow(data):
+            self._write(data)
 
     def _allow(self, data):
         """Returns whether or not to allow this data to pass the filter.

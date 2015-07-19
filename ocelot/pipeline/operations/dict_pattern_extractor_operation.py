@@ -1,29 +1,28 @@
 import copy
 import re
 
+from ocelot.pipeline.operations.base_operation import BaseOperation
 
-class DictPatternExtractor(object):
-    def __init__(self, output, config, *args, **kwargs):
-        self.output = output
+
+class DictPatternExtractor(BaseOperation):
+    def __init__(self, config, *args, **kwargs):
         self.config = config
 
-    def write(self, data):
-        """Accepts and extracts data from upstream.
-        Data can be pulled out of dict fields and parsed via regex.
+        super(DictPatternExtractor, self).__init__(*args, **kwargs)
 
-        Parsed data will be written to the provided output.
+    def _process(self, data):
+        """Extract data by pattern from dict fields.
 
         :param data:
         """
-        for item in data:
-            if isinstance(item, list):
-                self.output.write([
-                    map(self._extract, item),
-                ])
-            else:
-                self.output.write([
-                    self._extract(item)
-                ])
+        if isinstance(data, list):
+            self._write(
+                map(self._extract, data)
+            )
+        else:
+            self._write(
+                self._extract(data)
+            )
 
     def _extract(self, item):
         """Extracts the data from the fields via the provided config.

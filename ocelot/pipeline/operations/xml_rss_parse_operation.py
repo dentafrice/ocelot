@@ -1,22 +1,19 @@
-class XMLRSSParseOperation(object):
-    def __init__(self, output, *args, **kwargs):
-        self.output = output
+from ocelot.pipeline.operations.base_operation import BaseOperation
 
-    def write(self, data):
-        """Accepts and parses data from upstream.
 
-        Data will be converted from an ElementTree into
-        an array of dictionaries representing item elements.
+class XMLRSSParseOperation(BaseOperation):
+    def _process(self, data):
+        """Converts an Element into an array of dicts representing
+        <item> elements.
 
         :param data:
         """
-        for item in data:
-            return self.output.write([
-                map(
-                    self._convert_item_to_dict,
-                    self._find_items(item),
-                ),
-            ])
+        return self._write(
+            map(
+                self._convert_item_to_dict,
+                self._find_items(data),
+            )
+        )
 
     def _find_items(self, root_element):
         """Find all <item> elements in this ElementTree.

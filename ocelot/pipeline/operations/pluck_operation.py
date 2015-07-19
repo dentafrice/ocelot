@@ -1,26 +1,24 @@
-class PluckOperation(object):
+from ocelot.pipeline.operations.base_operation import BaseOperation
+
+
+class PluckOperation(BaseOperation):
     def __init__(self, output, fields, *args, **kwargs):
         self.output = output
         self.fields = fields
 
-    def write(self, data):
-        """Accepts and modifies data from upstream.
-
-        Fields will be plucked out of a dictionary and a new dictionary
-        will be written to the output.
+    def _process(self, data):
+        """Pluck fields from a dict.
 
         :param data:
         """
-        for item in data:
-            if isinstance(item, list):
-                self.output.write([
-                    map(self._pluck, item),
-                ])
-
-            else:
-                self.output.write([
-                    self._pluck(item),
-                ])
+        if isinstance(data, list):
+            self._write(
+                map(self._pluck, data),
+            )
+        else:
+            self._write(
+                self._pluck(data),
+            )
 
     def _pluck(self, item):
         """Plucks fields out of a dictionary.

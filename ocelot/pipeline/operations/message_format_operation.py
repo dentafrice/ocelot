@@ -1,29 +1,29 @@
 from jinja2 import Environment, DictLoader
 
+from ocelot.pipeline.operations.base_operation import BaseOperation
+
 FAKE_MESSAGE_NAME = 'fake_message_name'
 
 
-class MessageFormatOperation(object):
-    def __init__(self, output, message, *args, **kwarsg):
-        self.output = output
+class MessageFormatOperation(BaseOperation):
+    def __init__(self, message, *args, **kwargs):
         self.message_value = message
 
-    def write(self, data):
-        """Accepts and formats data from upstream.
+        super(MessageFormatOperation, self).__init__(*args, **kwargs)
 
-        Formatted message will be written to the output.
+    def _process(self, data):
+        """Render message with provided data.
 
         :param data:
         """
-        for item in data:
-            message_environment = Environment(loader=DictLoader({
-                FAKE_MESSAGE_NAME: self.message_value,
-            }))
+        message_environment = Environment(loader=DictLoader({
+            FAKE_MESSAGE_NAME: self.message_value,
+        }))
 
-            message = message_environment.get_template(FAKE_MESSAGE_NAME)
+        message = message_environment.get_template(FAKE_MESSAGE_NAME)
 
-            self.output.write([
-                message.render({
-                    'data': item,
-                }),
-            ])
+        self._write(
+            message.render({
+                'data': data,
+            }),
+        )
