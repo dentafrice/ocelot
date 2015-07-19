@@ -1,12 +1,7 @@
-class BaseInput(object):
-    def __init__(self, output, *args, **kwargs):
-        self.output = output
+from ocelot.pipeline.output_mixin import OutputMixin
 
+
+class BaseInput(OutputMixin):
     def run(self):
         """Runs the input and writes the data to the output."""
         raise NotImplementedError
-
-    def _write(self, response):
-        self.output.write([
-            response,
-        ])

@@ -1,7 +1,7 @@
-class BaseOperation(object):
-    def __init__(self, output, *args, **kwargs):
-        self.output = output
+from ocelot.pipeline.output_mixin import OutputMixin
 
+
+class BaseOperation(OutputMixin):
     def write(self, data):
         """Accepts and operates on data from upstream.
 
@@ -16,12 +16,3 @@ class BaseOperation(object):
         :param data:
         """
         self._write(data)
-
-    def _write(self, response):
-        """Write response to output.
-
-        :param response:
-        """
-        self.output.write([
-            response
-        ])

@@ -8,6 +8,10 @@ from ocelot.pipeline.operations import XMLRSSParseOperation
 from ocelot.pipeline.outputs import LogOutput
 
 if __name__ == '__main__':
+    LogOutput(
+        log_name='xkcd',
+    )
+
     URLInput(
         output=ChangeFilterOperation(
             output=XMLParseOperation(
