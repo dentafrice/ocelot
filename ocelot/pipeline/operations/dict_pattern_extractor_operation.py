@@ -8,6 +8,13 @@ class DictPatternExtractor(object):
         self.config = config
 
     def write(self, data):
+        """Accepts and extracts data from upstream.
+        Data can be pulled out of dict fields and parsed via regex.
+
+        Parsed data will be written to the provided output.
+
+        :param data:
+        """
         for item in data:
             if isinstance(item, list):
                 self.output.write([
@@ -19,6 +26,11 @@ class DictPatternExtractor(object):
                 ])
 
     def _extract(self, item):
+        """Extracts the data from the fields via the provided config.
+
+        :param dict item:
+        :returns dict: parsed item
+        """
         item = copy.deepcopy(item)
 
         for field, pattern in self.config.items():

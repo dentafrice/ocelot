@@ -4,6 +4,13 @@ class PluckOperation(object):
         self.fields = fields
 
     def write(self, data):
+        """Accepts and modifies data from upstream.
+
+        Fields will be plucked out of a dictionary and a new dictionary
+        will be written to the output.
+
+        :param data:
+        """
         for item in data:
             if isinstance(item, list):
                 self.output.write([
@@ -16,6 +23,11 @@ class PluckOperation(object):
                 ])
 
     def _pluck(self, item):
+        """Plucks fields out of a dictionary.
+
+        :param dict item:
+        :returns dict: plucked dictionary
+        """
         return {
             field: value
             for field, value in item.items() if field in self.fields
