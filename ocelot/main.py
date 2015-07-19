@@ -1,4 +1,5 @@
 from ocelot.pipeline.inputs import URLInput
+from ocelot.pipeline.operations import ChangeFilterOperation
 from ocelot.pipeline.operations import DictPatternExtractor
 from ocelot.pipeline.operations import MessageFormatOperation
 from ocelot.pipeline.operations import PluckOperation
@@ -8,16 +9,17 @@ from ocelot.pipeline.outputs import LogOutput
 
 if __name__ == '__main__':
     URLInput(
-        output=XMLParseOperation(
-            output=XMLRSSParseOperation(
-                output=PluckOperation(
-                    output=DictPatternExtractor(
-                        output=MessageFormatOperation(
-                            output=LogOutput(
-                                log_name='xkcd',
-                            ),
+        output=ChangeFilterOperation(
+            output=XMLParseOperation(
+                output=XMLRSSParseOperation(
+                    output=PluckOperation(
+                        output=DictPatternExtractor(
+                            output=MessageFormatOperation(
+                                output=LogOutput(
+                                    log_name='xkcd',
+                                ),
 
-                            message="""
+                                message="""
 XKCD Lineup:
 ----
 {% for item in data %}
@@ -25,16 +27,19 @@ XKCD Lineup:
 {{item.description}}
 {% endfor %}
 """,
+                            ),
+
+                            config={
+                                'description': 'src="(.*?)"',
+                            },
                         ),
 
-                        config={
-                            'description': 'src="(.*?)"',
-                        },
+                        fields=['title', 'description'],
                     ),
-
-                    fields=['title', 'description'],
                 ),
             ),
+
+            identifier='xkcd-rss',
         ),
 
         url='http://xkcd.com/rss.xml',
