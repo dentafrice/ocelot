@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 
 import mock
 
-from ocelot.pipeline.operations import XMLRSSParseOperation
+from ocelot.pipeline.channels.operations import XMLRSSParseOperation
 from ocelot.tests import TestCase
 
 FAKE_RSS_XML = """

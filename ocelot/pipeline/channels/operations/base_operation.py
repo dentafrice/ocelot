@@ -1,4 +1,4 @@
-from ocelot.pipeline.output_mixin import OutputMixin
+from ocelot.pipeline.channels.output_mixin import OutputMixin
 
 
 class BaseOperation(OutputMixin):

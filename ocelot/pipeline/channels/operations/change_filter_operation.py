@@ -2,7 +2,7 @@ import hashlib
 import pickle
 
 from ocelot.lib import cache
-from ocelot.pipeline.operations.base_operation import BaseOperation
+from ocelot.pipeline.channels.operations.base_operation import BaseOperation
 
 
 class ChangeFilterOperation(BaseOperation):

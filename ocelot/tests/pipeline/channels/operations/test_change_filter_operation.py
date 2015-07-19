@@ -1,6 +1,6 @@
 import mock
 
-from ocelot.pipeline.operations import ChangeFilterOperation
+from ocelot.pipeline.channels.operations import ChangeFilterOperation
 from ocelot.tests import TestCase
 
 

@@ -1,7 +1,7 @@
 import copy
 import re
 
-from ocelot.pipeline.operations.base_operation import BaseOperation
+from ocelot.pipeline.channels.operations.base_operation import BaseOperation
 
 
 class DictPatternExtractor(BaseOperation):

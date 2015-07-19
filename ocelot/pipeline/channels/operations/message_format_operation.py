@@ -1,6 +1,6 @@
 from jinja2 import Environment, DictLoader
 
-from ocelot.pipeline.operations.base_operation import BaseOperation
+from ocelot.pipeline.channels.operations.base_operation import BaseOperation
 
 FAKE_MESSAGE_NAME = 'fake_message_name'
 

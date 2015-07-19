@@ -1,6 +1,6 @@
 import mock
 
-from ocelot.pipeline.operations import MessageFormatOperation
+from ocelot.pipeline.channels.operations import MessageFormatOperation
 from ocelot.tests import TestCase
 
 FAKE_DICTS = [

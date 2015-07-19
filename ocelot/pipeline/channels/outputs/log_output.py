@@ -1,6 +1,6 @@
 from ocelot.lib import logging
 
-from ocelot.pipeline.outputs.base_output import BaseOutput
+from ocelot.pipeline.channels.outputs.base_output import BaseOutput
 
 
 class LogOutput(BaseOutput):

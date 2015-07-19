@@ -1,6 +1,6 @@
 import mock
 
-from ocelot.pipeline.operations import DictPatternExtractor
+from ocelot.pipeline.channels.operations import DictPatternExtractor
 from ocelot.tests import TestCase
 
 FAKE_DICTS = [

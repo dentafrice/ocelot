@@ -1,7 +1,7 @@
 from xml.etree.ElementTree import Element
 import mock
 
-from ocelot.pipeline.operations import XMLParseOperation
+from ocelot.pipeline.channels.operations import XMLParseOperation
 from ocelot.tests import TestCase
 
 FAKE_XML = """

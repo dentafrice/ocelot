@@ -1,6 +1,6 @@
 import mock
 
-from ocelot.pipeline.operations import PluckOperation
+from ocelot.pipeline.channels.operations import PluckOperation
 from ocelot.tests import TestCase
 
 FAKE_DICTS = [
