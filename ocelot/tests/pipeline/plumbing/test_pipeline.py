@@ -1,11 +1,18 @@
 import mock
 
+from ocelot.pipeline.channels.base_channel import BaseChannel
+from ocelot.pipeline.channels.inputs.base_input import BaseInput
 from ocelot.pipeline.plumbing.fitting import Fitting
 from ocelot.pipeline.plumbing.pipeline import Pipeline
 from ocelot.tests import TestCase
 
 
-class FakeChannel(object):
+class FakeChannel(BaseChannel):
+    def process(self, data):
+        pass
+
+
+class FakeInputChannel(BaseInput):
     def process(self, data):
         pass
 
@@ -22,7 +29,7 @@ class TestPipeline(TestCase):
 
     def test_input_fittings(self):
         """Test that only input fittings (no sources) are returned."""
-        fake_channel = FakeChannel()
+        fake_channel = FakeInputChannel()
         fake_connected_channel = FakeChannel()
 
         p = Pipeline('fake_name')
@@ -43,7 +50,7 @@ class TestPipeline(TestCase):
 
         self.assertEquals(len(p.fittings), 0)
 
-        fitting = p.add_channel(FakeChannel())
+        fitting = p.add_channel(FakeInputChannel())
         self.assertIsInstance(fitting, Fitting)
         self.assertEquals(len(p.fittings), 1)
 
@@ -53,7 +60,7 @@ class TestPipeline(TestCase):
 
         self.assertEquals(len(p.fittings), 0)
 
-        fitting = p.add_channel(FakeChannel())
+        fitting = p.add_channel(FakeInputChannel())
 
         with mock.patch.object(fitting, 'process') as mock_process:
             p.run('fake_data')

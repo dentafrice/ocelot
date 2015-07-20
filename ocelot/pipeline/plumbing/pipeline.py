@@ -15,7 +15,7 @@ class Pipeline(object):
         """
         return [
             fitting for fitting in self.fittings
-            if not len(fitting.source_pipes)
+            if fitting.is_input
         ]
 
     def add_channel(self, channel):
