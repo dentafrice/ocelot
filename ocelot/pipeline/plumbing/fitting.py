@@ -1,5 +1,6 @@
 import uuid
 
+from ocelot.pipeline.exceptions import StopProcessingException
 from ocelot.pipeline.plumbing.pipe import Pipe
 
 
@@ -8,6 +9,10 @@ class Fitting(object):
         self.identifier = identifier or str(uuid.uuid4())
         self.channel = channel
         self.pipes = []
+
+    @property
+    def is_input(self):
+        return self.channel.is_input
 
     @property
     def output_pipes(self):
@@ -55,5 +60,8 @@ class Fitting(object):
         """
         response = self.channel.process(data)
 
-        for pipe in self.output_pipes:
-            pipe.process(response)
+        try:
+            for pipe in self.output_pipes:
+                pipe.process(response)
+        except StopProcessingException:
+            pass
