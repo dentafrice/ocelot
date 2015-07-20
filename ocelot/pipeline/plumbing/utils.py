@@ -2,6 +2,11 @@ from graphviz import Digraph
 
 
 def pipeline_to_dot(pipeline):
+    """Converts a pipeline into a graphviz graph.
+
+    :param Pipeline pipeline:
+    :returns str: graph
+    """
     dot = Digraph(name=pipeline.name or 'Unknown')
 
     fittings = []
@@ -28,6 +33,11 @@ def pipeline_to_dot(pipeline):
 
 
 def _fitting_to_node_name(fitting):
+    """Returns node name for a Fitting.
+
+    :param Fitting fitting:
+    :returns str: node name
+    """
     return '{}-{}'.format(
         fitting.channel.__class__.__name__,
         fitting.identifier.split('-')[0],
