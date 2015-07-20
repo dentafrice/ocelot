@@ -11,5 +11,10 @@ clean:
 demo:
 	python -m 'ocelot.main'
 
-test:
+lint:
+	flake8 ocelot
+
+test: unit_tests lint
+
+unit_tests:
 	nosetests
