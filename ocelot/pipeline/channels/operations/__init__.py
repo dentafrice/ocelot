@@ -1,4 +1,3 @@
-from ocelot.pipeline.channels.operations.change_filter_operation import ChangeFilterOperation
 from ocelot.pipeline.channels.operations.dict_pattern_extractor_operation import (
     DictPatternExtractor,
 )
@@ -9,7 +8,6 @@ from ocelot.pipeline.channels.operations.xml_parse_operation import XMLParseOper
 from ocelot.pipeline.channels.operations.xml_rss_parse_operation import XMLRSSParseOperation
 
 __all__ = [
-    ChangeFilterOperation,
     DictPatternExtractor,
     MessageFormatOperation,
     NewItemFilterOperation,

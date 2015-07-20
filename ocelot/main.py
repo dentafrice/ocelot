@@ -1,9 +1,10 @@
 import uuid
 
+from ocelot.pipeline.channels.inputs import RawInput
 from ocelot.pipeline.channels.inputs import URLInput
-from ocelot.pipeline.channels.operations import ChangeFilterOperation
 from ocelot.pipeline.channels.operations import DictPatternExtractor
 from ocelot.pipeline.channels.operations import MessageFormatOperation
+from ocelot.pipeline.channels.operations import NewItemFilterOperation
 from ocelot.pipeline.channels.operations import PluckOperation
 from ocelot.pipeline.channels.operations import XMLParseOperation
 from ocelot.pipeline.channels.operations import XMLRSSParseOperation
@@ -20,12 +21,6 @@ if __name__ == '__main__':
         URLInput(url='http://xkcd.com/rss.xml'),
     )
 
-    # Change Filter
-    change = pipeline.add_channel(
-        # identifier='xkcd-rss',
-        ChangeFilterOperation(identifier=str(uuid.uuid4()))
-    )
-
     # XML Parser
     xml = pipeline.add_channel(
         XMLParseOperation()
@@ -34,6 +29,13 @@ if __name__ == '__main__':
     # RSS Parser
     rss = pipeline.add_channel(
         XMLRSSParseOperation()
+    )
+
+    # New Item Filter
+    new_item_filter = pipeline.add_channel(
+        NewItemFilterOperation(
+            identifier='xkcd-items',
+        )
     )
 
     # Field Plucker
@@ -66,10 +68,10 @@ if __name__ == '__main__':
     )
 
     # Connections
-    url.connect_fitting(change)
-    change.connect_fitting(xml)
+    url.connect_fitting(xml)
     xml.connect_fitting(rss)
-    rss.connect_fitting(plucker)
+    rss.connect_fitting(new_item_filter)
+    new_item_filter.connect_fitting(plucker)
     plucker.connect_fitting(pattern)
     pattern.connect_fitting(message)
     message.connect_fitting(log)
