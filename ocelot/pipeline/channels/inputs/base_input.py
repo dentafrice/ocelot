@@ -1,7 +1,7 @@
-from ocelot.pipeline.channels.output_mixin import OutputMixin
+from ocelot.pipeline.channels.base_channel import BaseChannel
 
 
-class BaseInput(OutputMixin):
+class BaseInput(BaseChannel):
     def process(self, data):
         """Runs the input and writes the data to the output.
 

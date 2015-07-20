@@ -1,0 +1,2 @@
+class BaseChannel(object):
+    pass
