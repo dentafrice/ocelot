@@ -1,11 +1,8 @@
-import uuid
-
-from ocelot.pipeline.channels.inputs import RawInput
 from ocelot.pipeline.channels.inputs import URLInput
-from ocelot.pipeline.channels.operations import DictPatternExtractor
+from ocelot.pipeline.channels.operations import DictMapperOperation
+from ocelot.pipeline.channels.operations import DictPatternExtractOperation
 from ocelot.pipeline.channels.operations import MessageFormatOperation
 from ocelot.pipeline.channels.operations import NewItemFilterOperation
-from ocelot.pipeline.channels.operations import PluckOperation
 from ocelot.pipeline.channels.operations import XMLParseOperation
 from ocelot.pipeline.channels.operations import XMLRSSParseOperation
 from ocelot.pipeline.channels.outputs import LogOutput
@@ -38,14 +35,33 @@ if __name__ == '__main__':
         )
     )
 
-    # Field Plucker
-    plucker = pipeline.add_channel(
-        PluckOperation(fields=['title', 'description'])
+    # Dict Extractor
+    extractor = pipeline.add_channel(
+        DictMapperOperation(
+            config={
+                'title': {
+                    'type': 'extract',
+                    'path': '$.title',
+                },
+
+                'description': {
+                    'type': 'extract',
+                    'path': '$.description',
+                },
+            }
+        )
     )
 
-    # Pattern Extractor
-    pattern = pipeline.add_channel(
-        DictPatternExtractor(config={'description': 'src="(.*?)"'})
+    updater = pipeline.add_channel(
+        DictPatternExtractOperation(
+            config={
+                'paths': [
+                    '$.description',
+                ],
+
+                'pattern': 'src="(.*?)"',
+            },
+        )
     )
 
     # Message Formatter
@@ -70,10 +86,11 @@ if __name__ == '__main__':
     # Connections
     url.connect_fitting(xml)
     xml.connect_fitting(rss)
-    rss.connect_fitting(new_item_filter)
-    new_item_filter.connect_fitting(plucker)
-    plucker.connect_fitting(pattern)
-    pattern.connect_fitting(message)
+    rss.connect_fitting(extractor)
+    # rss.connect_fitting(new_item_filter)
+    # new_item_filter.connect_fitting(extractor)
+    extractor.connect_fitting(updater)
+    updater.connect_fitting(message)
     message.connect_fitting(log)
 
     # Run pipeline
