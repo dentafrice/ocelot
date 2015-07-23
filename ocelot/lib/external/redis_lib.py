@@ -14,12 +14,16 @@ class Redis(object):
         return Redis.get_client().get(key)
 
     @staticmethod
-    def set(key, value):
+    def set(key, value, ttl=None):
         """Sets a key to a value.
 
         :param str key:
         :param str value:
+        :param int ttl: ttl in seconds for key to live.
         """
+        if ttl is not None:
+            return Redis.get_client().setex(key, ttl, value)
+
         return Redis.get_client().set(key, value)
 
     # TODO: this value should be cached off.

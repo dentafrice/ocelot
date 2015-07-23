@@ -10,10 +10,10 @@ def get(key):
     return Redis.get(key)
 
 
-def set(key, value):
+def set(key, value, ttl=None):
     """Sets a key to a value.
 
     :param str key:
     :param str value:
     """
-    return Redis.set(key, value)
+    return Redis.set(key, value, ttl=ttl)
