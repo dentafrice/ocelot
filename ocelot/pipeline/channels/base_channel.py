@@ -1,4 +1,7 @@
 class BaseChannel(object):
+    def __init__(self, id):
+        self.id = id
+
     @property
     def is_input(self):
         return False
