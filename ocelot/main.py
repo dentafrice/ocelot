@@ -41,12 +41,16 @@ if __name__ == '__main__':
             config={
                 'title': {
                     'type': 'extract',
-                    'path': '$.title',
+                    'config': {
+                        'path': '$.title',
+                    },
                 },
 
                 'description': {
                     'type': 'extract',
-                    'path': '$.description',
+                    'config': {
+                        'path': '$.description',
+                    }
                 },
             }
         )
