@@ -1,4 +1,4 @@
-from ocelot.pipeline.channels.operations import (
+from ocelot.pipeline.tasks.operations import (
     DictMapperOperation,
     DictPatternExtractOperation,
 )

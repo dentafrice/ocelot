@@ -1,4 +1,4 @@
-from ocelot.pipeline.channels.inputs.base_input import BaseInput
+from ocelot.pipeline.tasks.inputs.base_input import BaseInput
 
 
 class RawInput(BaseInput):

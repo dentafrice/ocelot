@@ -1,4 +1,4 @@
-from ocelot.pipeline.channels.operations import MessageFormatOperation
+from ocelot.pipeline.tasks.operations import MessageFormatOperation
 from ocelot.tests import TestCase
 
 FAKE_DICTS = [

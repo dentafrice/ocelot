@@ -18,14 +18,14 @@ class Pipeline(object):
             if fitting.is_input
         ]
 
-    def add_channel(self, channel):
-        """Adds a channel to this pipeline via a Fitting.
+    def add_task(self, task):
+        """Adds a task to this pipeline via a Fitting.
 
-        :param Channel channel:
-        :returns Fitting: fitting for this channel.
+        :param Task task:
+        :returns Fitting: fitting for this task.
         """
         fitting = Fitting(
-            channel=channel,
+            task=task,
         )
 
         self.fittings.append(fitting)

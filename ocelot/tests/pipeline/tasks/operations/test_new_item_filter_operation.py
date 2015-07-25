@@ -1,4 +1,4 @@
-from ocelot.pipeline.channels.operations import NewItemFilterOperation
+from ocelot.pipeline.tasks.operations import NewItemFilterOperation
 from ocelot.pipeline.exceptions import StopProcessingException
 from ocelot.tests import TestCase
 

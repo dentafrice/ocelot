@@ -5,14 +5,14 @@ from ocelot.pipeline.plumbing.pipe import Pipe
 
 
 class Fitting(object):
-    def __init__(self, channel, identifier=None):
+    def __init__(self, task, identifier=None):
         self.identifier = identifier or str(uuid.uuid4())
-        self.channel = channel
+        self.task = task
         self.pipes = []
 
     @property
     def is_input(self):
-        return self.channel.is_input
+        return self.task.is_input
 
     @property
     def output_pipes(self):
@@ -54,11 +54,11 @@ class Fitting(object):
         fitting.add_pipe(pipe)
 
     def process(self, data):
-        """Process data via the fitting's channel and write it to the output pipes.
+        """Process data via the fitting's task and write it to the output pipes.
 
         :param data: data to process
         """
-        response = self.channel.process(data)
+        response = self.task.process(data)
 
         try:
             for pipe in self.output_pipes:

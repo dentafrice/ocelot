@@ -1,11 +1,11 @@
 import xml.etree.ElementTree as ET
 
-from ocelot.pipeline.channels.operations import XMLRSSParseOperation
+from ocelot.pipeline.tasks.operations import XMLRSSParseOperation
 from ocelot.tests import TestCase
 
 FAKE_RSS_XML = """
 <rss>
-    <channel>
+    <task>
         <title>Fake thing</title>
         <item>
             <title>Fake Thing</title>
@@ -16,7 +16,7 @@ FAKE_RSS_XML = """
             <title>Fake Thing 2</title>
             <link>google2.com</link>
         </item>
-    </channel>
+    </task>
 </rss>
 """
 

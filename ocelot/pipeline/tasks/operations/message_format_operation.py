@@ -1,5 +1,5 @@
 from ocelot.lib import templating
-from ocelot.pipeline.channels.operations.base_operation import BaseOperation
+from ocelot.pipeline.tasks.operations.base_operation import BaseOperation
 
 FAKE_MESSAGE_NAME = 'fake_message_name'
 

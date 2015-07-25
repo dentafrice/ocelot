@@ -39,6 +39,6 @@ def _fitting_to_node_name(fitting):
     :returns str: node name
     """
     return '{}-{}'.format(
-        fitting.channel.__class__.__name__,
+        fitting.task.__class__.__name__,
         fitting.identifier.split('-')[0],
     )

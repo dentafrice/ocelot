@@ -1,7 +1,7 @@
-from ocelot.pipeline.channels.base_channel import BaseChannel
+from ocelot.pipeline.tasks.base_task import BaseTask
 
 
-class BaseOperation(BaseChannel):
+class BaseOperation(BaseTask):
     @property
     def is_operation(self):
         return True

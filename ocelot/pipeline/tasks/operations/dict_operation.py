@@ -3,7 +3,7 @@ import re
 
 import jsonpath_rw
 
-from ocelot.pipeline.channels.operations.base_operation import BaseOperation
+from ocelot.pipeline.tasks.operations.base_operation import BaseOperation
 from ocelot.pipeline.exceptions import InvalidConfigurationException
 
 

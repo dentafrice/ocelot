@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 
-from ocelot.pipeline.channels.operations.base_operation import BaseOperation
+from ocelot.pipeline.tasks.operations.base_operation import BaseOperation
 
 
 class XMLParseOperation(BaseOperation):
