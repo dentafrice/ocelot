@@ -96,6 +96,18 @@ class DictOperation(BaseOperation):
         return item
 
 
+class DictCreateOperation(DictOperation):
+    def _perform_operation(self, item):
+        """Creates a new dict with a provided key.
+
+        :param item:
+        :returns dict: constructed dict with key => item.
+        """
+        return {
+            self.config['key']: item,
+        }
+
+
 class DictMapperOperation(DictOperation):
     def _perform_operation(self, item):
         """Creates a new dict based on the provided config.
@@ -110,6 +122,8 @@ class DictMapperOperation(DictOperation):
 
             if op_type == 'extract':
                 new_dict[key] = self._extract(item, field_config['config'])
+            elif op_type == 'insert':
+                new_dict[key] = self._insert(item, field_config['config'])
             else:
                 raise InvalidConfigurationException(
                     'Unknown operation type: `{}`'.format(
@@ -122,6 +136,7 @@ class DictMapperOperation(DictOperation):
     def _extract(self, item, field_config):
         """Extracts a value out of the item at a path.
 
+        :param dict item:
         :param dict field_config:
         :returns: value
         """
@@ -131,6 +146,15 @@ class DictMapperOperation(DictOperation):
         )
 
         return matches[0].value if matches else None
+
+    def _insert(self, item, field_config):
+        """Inserts a specified value at a key.
+
+        :param dict item:
+        :param dict field_config:
+        :returns str: new value
+        """
+        return field_config.get('value')
 
 
 class DictPatternExtractOperation(DictOperation):

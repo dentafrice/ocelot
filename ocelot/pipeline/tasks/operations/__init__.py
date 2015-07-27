@@ -1,4 +1,5 @@
 from ocelot.pipeline.tasks.operations.dict_operation import (
+    DictCreateOperation,
     DictMapperOperation,
     DictPatternExtractOperation,
 )
@@ -8,6 +9,7 @@ from ocelot.pipeline.tasks.operations.xml_parse_operation import XMLParseOperati
 from ocelot.pipeline.tasks.operations.xml_rss_parse_operation import XMLRSSParseOperation
 
 __all__ = [
+    DictCreateOperation,
     DictMapperOperation,
     DictPatternExtractOperation,
     MessageFormatOperation,

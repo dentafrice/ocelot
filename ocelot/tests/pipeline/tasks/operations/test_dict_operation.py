@@ -1,4 +1,5 @@
 from ocelot.pipeline.tasks.operations import (
+    DictCreateOperation,
     DictMapperOperation,
     DictPatternExtractOperation,
 )
@@ -29,6 +30,23 @@ FAKE_ITEM = {
         },
     }
 }
+
+
+class TestDictCreateOperation(TestCase):
+    def test_creates_dict(self):
+        """Test that a dict is returned with the provided key => item."""
+        create = DictCreateOperation(
+            config={
+                'key': 'fake_key',
+            }
+        )
+
+        self.assertEquals(
+            create.process('hello there'),
+            {
+                'fake_key': 'hello there',
+            },
+        )
 
 
 class TestDictMapperOperation(TestCase):
@@ -111,6 +129,26 @@ class TestDictMapperOperation(TestCase):
             {
                 'field1': 'sup',
             },
+        )
+
+    def test_insert(self):
+        """Test that a value can be inserted."""
+        mapper = DictMapperOperation(
+            config={
+                'field1': {
+                    'type': 'insert',
+                    'config': {
+                        'value': 'foo bar baz',
+                    }
+                }
+            }
+        )
+
+        self.assertEquals(
+            mapper.process(FAKE_ITEM),
+            {
+                'field1': 'foo bar baz',
+            }
         )
 
 
