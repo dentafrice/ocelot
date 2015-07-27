@@ -12,7 +12,6 @@ FAKE_RECORD = {
 class TestPipelineMapper(TestCase):
     def test_to_entity(self):
         """Test that a record can be converted into an entity."""
-
         self.assertEquals(
             PipelineMapper.to_entity(FAKE_RECORD).to_native(),
             {
