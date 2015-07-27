@@ -64,6 +64,10 @@ datastore:
             type: insert
             config:
               value: 'ocelot@caleb.io'
+          subject:
+            type: insert
+            config:
+              value: 'New XKCD Items'
           to_email:
             type: insert
             config:
