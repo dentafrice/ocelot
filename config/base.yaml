@@ -1,3 +1,7 @@
+extends:
+  - datastore.yaml
+  - secrets.yaml
+
 external:
   redis:
     host: 127.0.0.1
