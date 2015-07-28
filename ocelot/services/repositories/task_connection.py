@@ -6,6 +6,11 @@ from ocelot import config
 class TaskConnectionRepository(object):
     @classmethod
     def fetch_connections_for_pipeline(cls, pipeline_id):
+        """Fetches list of task connections for a pipeline id.
+
+        :param str pipeline_id:
+        :returns list: list of task connection records (dict)
+        """
         pipeline_id = str(pipeline_id)
 
         connections = config.get('datastore.task_connections').data

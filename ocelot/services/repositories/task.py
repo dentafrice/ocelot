@@ -7,6 +7,11 @@ from ocelot.services.exceptions import ResourceNotFoundException
 class TaskRepository(object):
     @classmethod
     def fetch_task_by_id(cls, id):
+        """Fetches task record by id.
+
+        :param str id:
+        :returns dict: record
+        """
         id = str(id)
 
         tasks = config.get('datastore.tasks').data
