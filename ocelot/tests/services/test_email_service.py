@@ -5,7 +5,7 @@ from ocelot.tests import TestCase
 
 
 class TestEmailService(TestCase):
-    @mock.patch(SMTPGateway, 'send_email')
+    @mock.patch.object(SMTPGateway, 'send_email')
     def test_send_email_calls_smtp_gateway(self, mock_send):
         """Test that the EmailService calls the SMTPGateway"""
         email_data = {
@@ -16,4 +16,4 @@ class TestEmailService(TestCase):
         }
 
         EmailService.send_email(email_data)
-        mock_send.assert_called_once_with(mock_send)
+        mock_send.assert_called_once_with(email_data)
