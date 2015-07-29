@@ -1,9 +1,9 @@
 import hashlib
 import pickle
 
-from ocelot.lib import cache
 from ocelot.pipeline.tasks.operations.base_operation import BaseOperation
 from ocelot.pipeline.exceptions import StopProcessingException
+from ocelot.services.cache import CacheService
 
 
 class NewItemFilterOperation(BaseOperation):
@@ -52,7 +52,7 @@ class NewItemFilterOperation(BaseOperation):
         :returns bool: whether or not the hash is in the cache.
         """
         return bool(
-            cache.get(
+            CacheService.fetch_value_for_key(
                 self._get_cache_key(data_hash)
             )
         )
@@ -62,7 +62,7 @@ class NewItemFilterOperation(BaseOperation):
 
         :param str data_hash: hash to store
         """
-        return cache.set(
+        return CacheService.set_value_for_key(
             self._get_cache_key(data_hash),
             data_hash,
         )

@@ -22,7 +22,7 @@ class TestCase(unittest.TestCase):
 
     def _patch_redis(self):
         patcher = mock.patch(
-            'ocelot.lib.external.redis_lib.Redis.get_client',
+            'ocelot.services.gateways.redis.RedisGateway.get_client',
             fakeredis.FakeStrictRedis
         )
 
