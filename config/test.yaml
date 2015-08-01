@@ -1,0 +1,10 @@
+extends:
+  - base.yaml
+
+external:
+  database:
+    sqlalchemy:
+      url: postgresql+psycopg2://ocelot@/ocelot_test
+
+testing:
+  fixtures_file: ocelot/tests/data/fixtures.yaml
