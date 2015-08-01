@@ -2,6 +2,9 @@ extends:
   - secrets.yaml
 
 external:
+  database:
+    sqlalchemy:
+      url: postgresql+psycopg2://ocelot@/ocelot
   redis:
     host: 127.0.0.1
     port: 6379
