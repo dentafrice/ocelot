@@ -3,12 +3,20 @@ pipeline:
   fields:
     name: 'Cool Pipeline'
 
-pipeline_schedule:
+pipeline_schedule_cron:
   model: PipelineScheduleStore
   fields:
     pipeline_id: !rel pipeline.id
     schedule: '*/5 * * * *'
     schedule_type: cron
+    next_run_at: !now -6h
+
+pipeline_schedule_interval:
+  model: PipelineScheduleStore
+  fields:
+    pipeline_id: !rel pipeline.id
+    schedule: '160'
+    schedule_type: interval
     next_run_at: !now -6h
 
 url_task:
