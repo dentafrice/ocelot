@@ -1,38 +1,46 @@
 pipeline:
-  model: .pipeline:PipelineStore
+  model: PipelineStore
   fields:
     name: 'Cool Pipeline'
 
+pipeline_schedule:
+  model: PipelineScheduleStore
+  fields:
+    pipeline_id: !rel pipeline.id
+    schedule: '*/5 * * * *'
+    schedule_type: cron
+    next_run_at: !now -6h
+
 url_task:
-  model: .task:TaskStore
+  model: TaskStore
   fields:
     type: 'URLInput'
     config:
       url: 'http://example.com'
 
 raw_input_task:
-  model: .task:TaskStore
+  model: TaskStore
   fields:
     type: 'RawInput'
     config:
       data: 'whats up'
 
 log_output_task:
-  model: .task:TaskStore
+  model: TaskStore
   fields:
     type: 'LogOutput'
     config:
       log_name: 'testing'
 
 url_to_log_connection:
-  model: .task_connection:TaskConnectionStore
+  model: TaskConnectionStore
   fields:
     from_task_id: !rel url_task.id
     to_task_id: !rel log_output_task.id
     pipeline_id: !rel pipeline.id
 
 raw_input_to_log_connection:
-  model: .task_connection:TaskConnectionStore
+  model: TaskConnectionStore
   fields:
     from_task_id: !rel raw_input_task.id
     to_task_id: !rel log_output_task.id
