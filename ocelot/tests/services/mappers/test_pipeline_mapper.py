@@ -19,13 +19,10 @@ class TestPipelineMapper(DatabaseTestCase):
     def test_to_record(self):
         """Test that an entity can be converted into a record."""
         entity = PipelineMapper.to_entity(self.pipeline)
+        record = PipelineMapper.to_record(entity)
 
-        self.assertEquals(
-            PipelineMapper.to_record(entity).id,
-            self.pipeline.id,
-        )
-
-        self.assertEquals(
-            PipelineMapper.to_record(entity).name,
-            self.pipeline.name,
-        )
+        for c in record.__table__.columns:
+            self.assertEquals(
+                getattr(record, c.name),
+                getattr(self.pipeline, c.name),
+            )

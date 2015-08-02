@@ -1,38 +1,29 @@
-import uuid
-
 from ocelot.services.mappers.task import TaskMapper
-from ocelot.tests import TestCase
-
-FAKE_RECORD = {
-    'id': '9402fd61-4f92-4c8a-a420-add97c09f261',
-    'type': 'URLInput',
-    'config': {
-        'url': 'http://example.com/'
-    }
-}
+from ocelot.tests import DatabaseTestCase
 
 
-class TestTaskMapper(TestCase):
+class TestTaskMapper(DatabaseTestCase):
+    def setUp(self):
+        self.install_fixture('url_task')
+
     def test_to_entity(self):
         """Test that a record can be converted into an entity."""
         self.assertEquals(
-            TaskMapper.to_entity(FAKE_RECORD).to_native(),
+            TaskMapper.to_entity(self.url_task).to_native(),
             {
-                'id': uuid.UUID(FAKE_RECORD['id']),
-                'type': FAKE_RECORD['type'],
-                'config': FAKE_RECORD['config'],
+                'id': self.url_task.id,
+                'type': self.url_task.type,
+                'config': self.url_task.config,
             }
         )
 
     def test_to_record(self):
         """Test that an entity can be converted into a record."""
-        entity = TaskMapper.to_entity(FAKE_RECORD)
+        entity = TaskMapper.to_entity(self.url_task)
+        record = TaskMapper.to_record(entity)
 
-        self.assertEquals(
-            TaskMapper.to_record(entity),
-            {
-                'id': uuid.UUID(FAKE_RECORD['id']),
-                'type': FAKE_RECORD['type'],
-                'config': FAKE_RECORD['config'],
-            }
-        )
+        for c in record.__table__.columns:
+            self.assertEquals(
+                getattr(record, c.name),
+                getattr(self.url_task, c.name)
+            )

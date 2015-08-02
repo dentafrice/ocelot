@@ -1,3 +1,4 @@
+from ocelot.services.datastores import TaskStore
 from ocelot.services.entities.task import TaskEntity
 
 
@@ -6,13 +7,13 @@ class TaskMapper(object):
     def to_entity(record):
         """Converts record into a TaskEntity.
 
-        :param dict record:
+        :param TaskStore record:
         :returns TaskEntity:
         """
         return TaskEntity({
-            'id': record['id'],
-            'type': record['type'],
-            'config': record['config'],
+            'id': record.id,
+            'type': record.type,
+            'config': record.config,
         })
 
     @staticmethod
@@ -20,6 +21,6 @@ class TaskMapper(object):
         """Converts TaskEntity into a record.
 
         :param TaskEntity entity:
-        :returns dict: record
+        :returns TaskStore: record
         """
-        return entity.to_native()
+        return TaskStore(**entity.to_native())
