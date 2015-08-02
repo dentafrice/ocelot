@@ -58,5 +58,6 @@ class GUID(TypeDecorator):
 
 
 from ocelot.services.datastores.pipeline import PipelineStore  # noqa
+from ocelot.services.datastores.pipeline_schedule import PipelineScheduleStore  # noqa
 from ocelot.services.datastores.task import TaskStore  # noqa
 from ocelot.services.datastores.task_connection import TaskConnectionStore  # noqa
