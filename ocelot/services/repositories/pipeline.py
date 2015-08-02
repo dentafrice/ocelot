@@ -1,6 +1,4 @@
-import copy
-
-from ocelot import config
+from ocelot.services.datastores import NoResultFound, PipelineStore, Session
 from ocelot.services.exceptions import ResourceNotFoundException
 
 
@@ -10,16 +8,13 @@ class PipelineRepository(object):
         """Returns pipeline record by id.
 
         :param str id:
-        :returns dict: record
+        :returns TaskStore: record
         """
-        id = str(id)
-
-        pipelines = config.get('datastore.pipelines').data
-
         try:
-            pipeline_data = copy.deepcopy(pipelines[id])
-            pipeline_data['id'] = id
-
-            return pipeline_data
-        except KeyError:
+            return (
+                Session.query(PipelineStore)
+                .filter(PipelineStore.id == id)
+                .one()
+            )
+        except NoResultFound:
             raise ResourceNotFoundException
