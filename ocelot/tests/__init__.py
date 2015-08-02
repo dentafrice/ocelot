@@ -1,11 +1,11 @@
 import os
 
 from ocelot import config
-from ocelot.tests.test_case import (
+from ocelot.tests.test_case import (  # noqa
     DatabaseTestCase,
     fixtures_manager,
     TestCase,
-)  # noqa
+)
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__) + '../../../')
 FIXTURES_PATH = os.path.join(ROOT_PATH, config.get('testing.fixtures_file'))
