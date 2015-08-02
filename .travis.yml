@@ -12,3 +12,6 @@ before_script:
   - psql -c 'create database ocelot_test;' -U postgres
 
 script: make test
+
+notifications:
+  email: false
