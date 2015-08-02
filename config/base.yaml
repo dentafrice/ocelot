@@ -1,6 +1,3 @@
-extends:
-  - secrets.yaml
-
 external:
   database:
     sqlalchemy:
