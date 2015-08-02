@@ -7,23 +7,27 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.orm.exc import NoResultFound  # noqa
 from sqlalchemy.types import TypeDecorator, CHAR
 
+from ocelot import config
+
 
 BaseStore = declarative_base()
 Session = scoped_session(sessionmaker())
 
 
-def create_tables():
-    BaseStore.metadata.create_all(get_engine())
+def create_tables(engine=None):
+    engine = engine or get_engine()
+
+    BaseStore.metadata.create_all(engine)
 
 
-def get_engine():
-    return create_engine(
-        'postgresql+psycopg2://ocelot@/ocelot?host=/var/run/postgresql&port=5432',
-    )
+def get_engine(url=None):
+    url = url or config.get('external.database.sqlalchemy.url')
+
+    return create_engine(url)
 
 
-def initialize():
-    engine = get_engine()
+def initialize(engine=None):
+    engine = engine or get_engine()
 
     Session.configure(bind=engine)
     BaseStore.metadata.bind = engine
