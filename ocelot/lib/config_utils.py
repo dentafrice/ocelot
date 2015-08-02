@@ -43,7 +43,11 @@ def load_config(file_path):
                 )
 
                 if extended_config_data:
-                    config_data.update(extended_config_data)
+                    extended_config_data.update(config_data)
+
+                    config_data = extended_config_data
+                #  if extended_config_data:
+                #      config_data.update(extended_config_data)
 
     return config_data
 
