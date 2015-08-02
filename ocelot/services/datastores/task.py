@@ -1,4 +1,3 @@
-import json
 import uuid
 
 from sqlalchemy import Column, String
@@ -12,15 +11,4 @@ class TaskStore(BaseStore):
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
     type = Column(String)
-    _config = Column('config', JSON)
-
-    @property
-    def config(self):
-        try:
-            return json.loads(self._config)
-        except TypeError:
-            return {}
-
-    @config.setter
-    def config(self, value):
-        self._config = value
+    config = Column(JSON)

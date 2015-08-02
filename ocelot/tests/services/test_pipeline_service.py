@@ -8,27 +8,23 @@ from ocelot.services.pipeline import (
     TaskConnectionService,
     TaskService,
 )
-from ocelot.tests import TestCase
+from ocelot.tests import DatabaseTestCase
 
 
-FAKE_UUID = '7cc88a81-ff0f-4e48-b5e2-e1fde37d0481'
-FAKE_RECORD = {
-    'id': FAKE_UUID,
-    'name': 'fake pipeline',
-}
+class TestPipelineService(DatabaseTestCase):
+    def setUp(self):
+        self.install_fixture('pipeline')
 
-
-class TestPipelineService(TestCase):
     @mock.patch.object(PipelineRepository, 'fetch_pipeline_by_id')
     def test_fetch_pipeline_by_id(self, mock_fetch):
         """Test that you can fetch a PipelineEntity by ID."""
-        mock_fetch.return_value = FAKE_RECORD
+        mock_fetch.return_value = self.pipeline
 
-        entity = PipelineService.fetch_pipeline_by_id(FAKE_UUID)
+        entity = PipelineService.fetch_pipeline_by_id(self.pipeline.id)
 
         self.assertEquals(
-            str(entity.id),
-            FAKE_UUID,
+            entity.id,
+            self.pipeline.id,
         )
 
     @mock.patch.object(TaskService, 'process_task_with_data')
@@ -60,9 +56,9 @@ class TestPipelineService(TestCase):
             None,  # last output doesn't return anything
         ]
 
-        PipelineService.run_pipeline_by_id(FAKE_UUID)
+        PipelineService.run_pipeline_by_id(self.pipeline.id)
 
-        mock_graph.assert_called_once_with(FAKE_UUID)
+        mock_graph.assert_called_once_with(self.pipeline.id)
 
         self.assertEquals(mock_process.call_count, 3)
 
@@ -144,7 +140,7 @@ class TestPipelineService(TestCase):
         mock_process.side_effect = fake_process
         mock_graph.return_value = graph
 
-        PipelineService.run_pipeline_by_id(FAKE_UUID)
+        PipelineService.run_pipeline_by_id(self.pipeline.id)
 
         self.assertEquals(mock_process.call_count, 4)
 

@@ -10,6 +10,13 @@ url_task:
     config:
       url: 'http://example.com'
 
+raw_input_task:
+  model: .task:TaskStore
+  fields:
+    type: 'RawInput'
+    config:
+      data: 'whats up'
+
 log_output_task:
   model: .task:TaskStore
   fields:
@@ -21,5 +28,12 @@ url_to_log_connection:
   model: .task_connection:TaskConnectionStore
   fields:
     from_task_id: !rel url_task.id
+    to_task_id: !rel log_output_task.id
+    pipeline_id: !rel pipeline.id
+
+raw_input_to_log_connection:
+  model: .task_connection:TaskConnectionStore
+  fields:
+    from_task_id: !rel raw_input_task.id
     to_task_id: !rel log_output_task.id
     pipeline_id: !rel pipeline.id
