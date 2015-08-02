@@ -1,3 +1,4 @@
+from ocelot.services.datastores import PipelineStore
 from ocelot.services.entities.pipeline import PipelineEntity
 
 
@@ -6,12 +7,12 @@ class PipelineMapper(object):
     def to_entity(record):
         """Converts record into a PipelineEntity.
 
-        :param dict record:
+        :param PipelineStore record:
         :returns PipelineEntity:
         """
         return PipelineEntity({
-            'id': record['id'],
-            'name': record['name'],
+            'id': record.id,
+            'name': record.name,
         })
 
     @staticmethod
@@ -19,6 +20,6 @@ class PipelineMapper(object):
         """Converts PipelineEntity into a record.
 
         :param PipelineEntity entity:
-        :returns dict: record
+        :returns PipelineStore: record
         """
-        return entity.to_native()
+        return PipelineStore(**entity.to_native())
