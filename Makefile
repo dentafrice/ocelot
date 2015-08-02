@@ -9,12 +9,15 @@ clean:
 	find . -name '*.pyc' -delete
 
 demo:
-	python -m 'ocelot.main'
+	OCELOT_CONFIG=config/development.yaml python -m 'ocelot.main'
 
 lint:
 	flake8 ocelot
 
+seed:
+	OCELOT_CONFIG=config/development.yaml python -m 'ocelot.scripts.seed'
+
 test: unit_tests lint
 
 unit_tests:
-	nosetests
+	OCELOT_CONFIG=config/test.yaml nosetests
