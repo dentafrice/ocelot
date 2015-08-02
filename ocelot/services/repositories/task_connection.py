@@ -1,6 +1,4 @@
-import copy
-
-from ocelot import config
+from ocelot.services.datastores import TaskConnectionStore, Session
 
 
 class TaskConnectionRepository(object):
@@ -11,17 +9,7 @@ class TaskConnectionRepository(object):
         :param str pipeline_id:
         :returns list: list of task connection records (dict)
         """
-        pipeline_id = str(pipeline_id)
-
-        connections = config.get('datastore.task_connections').data
-
-        matched_connections = []
-
-        for connection_id, connection_data in connections.items():
-            if connection_data['pipeline_id'] == pipeline_id:
-                connection_data = copy.deepcopy(connection_data)
-                connection_data['id'] = connection_id
-
-                matched_connections.append(connection_data)
-
-        return matched_connections
+        return (
+            Session.query(TaskConnectionStore)
+            .filter(TaskConnectionStore.pipeline_id == pipeline_id)
+        ).all()
