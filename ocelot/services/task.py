@@ -1,6 +1,10 @@
+from ocelot.lib import logging
+
 from ocelot.services.constants.task import TASK_MAP
 from ocelot.services.mappers.task import TaskMapper
 from ocelot.services.repositories.task import TaskRepository
+
+log = logging.getLogger('ocelot.tasks')
 
 
 class TaskService(object):
@@ -24,6 +28,12 @@ class TaskService(object):
         :returns: response from task class
         """
         task_entity = cls.fetch_task_by_id(id)
+
+        log.info({
+            'message': 'Running task',
+            'id': id,
+            'type': task_entity.type,
+        })
 
         task_class = TASK_MAP[task_entity.type](
             id=task_entity.id,
