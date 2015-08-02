@@ -1,0 +1,7 @@
+extends:
+  - test.yaml
+
+external:
+  database:
+    sqlalchemy:
+      url: postgresql+psycopg2://postgres@/ocelot_test

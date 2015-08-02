@@ -20,4 +20,4 @@ seed:
 test: unit_tests lint
 
 unit_tests:
-	OCELOT_CONFIG=config/test.yaml nosetests
+	nosetests
