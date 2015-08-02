@@ -1,6 +1,4 @@
-import copy
-
-from ocelot import config
+from ocelot.services.datastores import NoResultFound, TaskStore, Session
 from ocelot.services.exceptions import ResourceNotFoundException
 
 
@@ -10,16 +8,13 @@ class TaskRepository(object):
         """Fetches task record by id.
 
         :param str id:
-        :returns dict: record
+        :returns TaskStore: record
         """
-        id = str(id)
-
-        tasks = config.get('datastore.tasks').data
-
         try:
-            task_data = copy.deepcopy(tasks[id])
-            task_data['id'] = id
-
-            return task_data
-        except KeyError:
+            return (
+                Session.query(TaskStore)
+                .filter(TaskStore.id == id)
+                .one()
+            )
+        except NoResultFound:
             raise ResourceNotFoundException
