@@ -1,10 +1,14 @@
 from collections import deque
 
+from ocelot.lib import logging
 from ocelot.pipeline.exceptions import StopProcessingException
+from ocelot.services.pipeline_schedule import PipelineScheduleService
 from ocelot.services.task import TaskService
 from ocelot.services.task_connection import TaskConnectionService
 from ocelot.services.mappers.pipeline import PipelineMapper
 from ocelot.services.repositories.pipeline import PipelineRepository
+
+log = logging.getLogger('ocelot.pipelines')
 
 
 class PipelineService(object):
@@ -21,6 +25,10 @@ class PipelineService(object):
 
     @classmethod
     def run_pipeline_by_id(cls, id):
+        log.info('Running pipeline: {}'.format(id))
+
+        PipelineScheduleService.pre_run_schedule(id)
+
         # get graph
         graph_data = TaskConnectionService.build_graph_for_pipeline(id)
 
@@ -44,3 +52,5 @@ class PipelineService(object):
                     pass
             except StopProcessingException:
                 pass
+
+        PipelineScheduleService.post_run_schedule(id)

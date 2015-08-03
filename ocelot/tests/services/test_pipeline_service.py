@@ -4,6 +4,7 @@ import uuid
 from ocelot.pipeline.exceptions import StopProcessingException
 from ocelot.services.pipeline import (
     PipelineRepository,
+    PipelineScheduleService,
     PipelineService,
     TaskConnectionService,
     TaskService,
@@ -14,6 +15,7 @@ from ocelot.tests import DatabaseTestCase
 class TestPipelineService(DatabaseTestCase):
     def setUp(self):
         self.install_fixture('pipeline')
+        self.install_fixture('pipeline_schedule_interval')
 
     @mock.patch.object(PipelineRepository, 'fetch_pipeline_by_id')
     def test_fetch_pipeline_by_id(self, mock_fetch):
@@ -79,6 +81,18 @@ class TestPipelineService(DatabaseTestCase):
             mock_process.call_args_list[2][0],
             (node3_uuid, 'fake_response2'),
         )
+
+    @mock.patch.object(PipelineScheduleService, 'pre_run_schedule')
+    def test_run_pipeline_by_id_pre_run(self, mock_pre_run):
+        """Test that pre_run_schedule is called when running the pipeline."""
+        PipelineService.run_pipeline_by_id(self.pipeline.id)
+        mock_pre_run.assert_called_once_with(self.pipeline.id)
+
+    @mock.patch.object(PipelineScheduleService, 'post_run_schedule')
+    def test_run_pipeline_by_id_post_run(self, mock_post_run):
+        """Test that pre_run_schedule is called when running the pipeline."""
+        PipelineService.run_pipeline_by_id(self.pipeline.id)
+        mock_post_run.assert_called_once_with(self.pipeline.id)
 
     @mock.patch.object(TaskService, 'process_task_with_data')
     @mock.patch.object(TaskConnectionService, 'build_graph_for_pipeline')
