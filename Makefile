@@ -14,6 +14,9 @@ demo:
 lint:
 	flake8 ocelot
 
+scheduler:
+	python -m 'ocelot.scheduler'
+
 seed:
 	psql template1 -c 'drop database if exists ocelot;'
 	psql template1 -c 'create database ocelot;'
