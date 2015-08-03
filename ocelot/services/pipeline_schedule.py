@@ -4,15 +4,17 @@ from ocelot.services.repositories.pipeline_schedule import PipelineScheduleRepos
 
 class PipelineScheduleService(object):
     @classmethod
-    def fetch_schedules_for_pipeline(cls, pipeline_id):
-        """Returns PipelineScheduleEntities for a pipeline_id.
+    def fetch_schedule_for_pipeline(cls, pipeline_id):
+        """Returns a PipelineScheduleEntity for a pipeline_id.
 
         :param str pipeline_id:
-        :returns list(PipelineScheduleEntity):
+        :returns PipelineScheduleEntity:
+        :raises ResourceNotFoundException: if not found
         """
-        return map(
-            PipelineScheduleMapper.to_entity,
-            PipelineScheduleRepository.fetch_schedules_for_pipeline(pipeline_id),
+        return PipelineScheduleMapper.to_entity(
+            PipelineScheduleRepository.fetch_schedule_for_pipeline(
+                pipeline_id,
+            ),
         )
 
     @classmethod

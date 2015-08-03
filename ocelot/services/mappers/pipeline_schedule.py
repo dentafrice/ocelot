@@ -11,7 +11,6 @@ class PipelineScheduleMapper(object):
         :returns PipelineScheduleEntity:
         """
         return PipelineScheduleEntity({
-            'id': record.id,
             'pipeline_id': record.pipeline_id,
             'schedule': record.schedule,
             'schedule_type': record.schedule_type,

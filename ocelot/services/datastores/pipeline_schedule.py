@@ -1,5 +1,3 @@
-import uuid
-
 from sqlalchemy import Boolean, Column, DateTime, String
 
 from ocelot.services.datastores import BaseStore, GUID
@@ -8,8 +6,7 @@ from ocelot.services.datastores import BaseStore, GUID
 class PipelineScheduleStore(BaseStore):
     __tablename__ = 'pipeline_schedules'
 
-    id = Column(GUID, primary_key=True, default=uuid.uuid4)
-    pipeline_id = Column(GUID, index=True)
+    pipeline_id = Column(GUID, primary_key=True)
 
     schedule = Column(String)
     schedule_type = Column(String)

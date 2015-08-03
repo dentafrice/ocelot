@@ -11,7 +11,6 @@ class TestPipelineScheduleMapper(DatabaseTestCase):
         self.assertEquals(
             PipelineScheduleMapper.to_entity(self.pipeline_schedule_cron).to_native(),
             {
-                'id': self.pipeline_schedule_cron.id,
                 'pipeline_id': self.pipeline_schedule_cron.pipeline_id,
                 'schedule': self.pipeline_schedule_cron.schedule,
                 'schedule_type': self.pipeline_schedule_cron.schedule_type,
