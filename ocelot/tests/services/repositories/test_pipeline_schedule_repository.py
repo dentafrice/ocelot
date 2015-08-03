@@ -18,3 +18,26 @@ class TestPipelineScheduleRepository(DatabaseTestCase):
                 self.pipeline_schedule_interval,
             ],
         )
+
+    def test_write_record(self):
+        """Test that we can write a record to the database."""
+        def fetch_record(id):
+            return filter(
+                lambda r: r.id == id,
+                PipelineScheduleRepository.fetch_schedules_for_pipeline(self.pipeline.id),
+            )[0]
+
+        record = self.pipeline_schedule_interval
+
+        self.assertNotEquals(
+            fetch_record(record.id).schedule,
+            '150',
+        )
+
+        record.schedule = '150'
+        PipelineScheduleRepository.write_record(record)
+
+        self.assertEquals(
+            fetch_record(record.id).schedule,
+            '150',
+        )

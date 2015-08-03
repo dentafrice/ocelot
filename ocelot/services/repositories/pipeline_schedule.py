@@ -14,3 +14,12 @@ class PipelineScheduleRepository(object):
             .filter(PipelineScheduleStore.pipeline_id == pipeline_id)
             .all()
         )
+
+    @classmethod
+    def write_record(cls, pipeline_record):
+        """Writes a record to the database.
+
+        :param PipelineScheduleStore pipeline_record:
+        """
+        Session.merge(pipeline_record)
+        Session.commit()
