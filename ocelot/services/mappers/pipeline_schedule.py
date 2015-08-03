@@ -13,7 +13,7 @@ class PipelineScheduleMapper(object):
         return PipelineScheduleEntity({
             'pipeline_id': record.pipeline_id,
             'schedule': record.schedule,
-            'schedule_type': record.schedule_type,
+            'type': record.type,
             'next_run_at': record.next_run_at,
             'last_run_at': record.last_run_at,
             'locked': record.locked,
