@@ -15,11 +15,13 @@ lint:
 	flake8 ocelot
 
 seed:
+	psql template1 -c 'drop database if exists ocelot;'
+	psql template1 -c 'create database ocelot;'
 	OCELOT_CONFIG=config/development.yaml python -m 'ocelot.scripts.seed'
 
 test: unit_tests lint
 
 unit_tests:
-	psql -c 'drop database if exists ocelot_test;'
-	psql -c 'create database ocelot_test;'
+	psql template1 -c 'drop database if exists ocelot_test;'
+	psql template1 -c 'create database ocelot_test;'
 	nosetests

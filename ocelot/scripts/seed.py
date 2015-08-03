@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 from sqlalchemy.exc import IntegrityError
@@ -5,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from ocelot.services import datastores
 from ocelot.services.datastores import (
     PipelineStore,
+    PipelineScheduleStore,
     Session,
     TaskConnectionStore,
     TaskStore,
@@ -27,14 +29,16 @@ if __name__ == '__main__':
     datastores.create_tables()
     datastores.initialize()
 
-    Session.execute('TRUNCATE TABLE pipelines;')
-    Session.execute('TRUNCATE TABLE tasks;')
-    Session.execute('TRUNCATE TABLE task_connections;')
-    Session.commit()
-
     pipeline = create_datastore(PipelineStore(
         id='96feda22-f80d-4cee-ad51-4e18de0b655a',
         name='XKCD Check',
+    ))
+
+    create_datastore(PipelineScheduleStore(
+        pipeline_id=pipeline.id,
+        schedule=str(6 * 60 * 60),
+        schedule_type='interval',
+        next_run_at=datetime.utcnow(),
     ))
 
     url = create_datastore(TaskStore(
