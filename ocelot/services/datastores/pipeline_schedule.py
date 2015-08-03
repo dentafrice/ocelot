@@ -9,7 +9,7 @@ class PipelineScheduleStore(BaseStore):
     pipeline_id = Column(GUID, primary_key=True)
 
     schedule = Column(String)
-    schedule_type = Column(String)
+    type = Column(String)
 
     next_run_at = Column(DateTime, index=True)
     last_run_at = Column(DateTime, index=True)
