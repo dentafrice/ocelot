@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
+
 from ocelot.lib import logging
+from ocelot.services.constants.pipeline_schedule import PipelineScheduleTypes
 from ocelot.services.mappers.pipeline_schedule import PipelineScheduleMapper
 from ocelot.services.repositories.pipeline_schedule import PipelineScheduleRepository
 
@@ -53,9 +56,43 @@ class PipelineScheduleService(object):
 
         :param str pipeline_id:
         """
-        # TODO: calculate next run time
-        # TODO: set last_run_time = datetime.utcnow()
+        cls.update_last_run_at_for_pipeline(pipeline_id)
+        cls.update_next_run_at_for_pipeline(pipeline_id)
         cls.unlock_schedule_for_pipeline(pipeline_id)
+
+    @classmethod
+    def update_last_run_at_for_pipeline(cls, pipeline_id):
+        """Updates the last time a pipeline schedule was ran.
+
+        :param str pipeline_id:
+        """
+        schedule = cls.fetch_schedule_for_pipeline(pipeline_id)
+        schedule.last_run_at = datetime.utcnow()
+
+        cls.write_pipeline_schedule(schedule)
+
+    @classmethod
+    def update_next_run_at_for_pipeline(cls, pipeline_id):
+        """Updates the next_run_at time for a schedule.
+
+        :param str pipeline_id:
+        """
+        schedule = cls.fetch_schedule_for_pipeline(pipeline_id)
+
+        if schedule.type == PipelineScheduleTypes.cron:
+            raise NotImplementedError
+        elif schedule.type == PipelineScheduleTypes.interval:
+            if not schedule.last_run_at:
+                # schedule hasn't ran yet. let's set it to now.
+                schedule.last_run_at = datetime.utcnow()
+
+            schedule.next_run_at = (
+                schedule.last_run_at + timedelta(
+                    seconds=int(schedule.schedule),
+                )
+            )
+
+        cls.write_pipeline_schedule(schedule)
 
     @classmethod
     def lock_schedule_for_pipeline(cls, pipeline_id):
@@ -63,10 +100,10 @@ class PipelineScheduleService(object):
 
         :param str pipeline_id:
         """
-        cls.update_schedule_for_pipeline(
-            pipeline_id,
-            {'locked': True},
-        )
+        schedule = cls.fetch_schedule_for_pipeline(pipeline_id)
+        schedule.locked = True
+
+        cls.write_pipeline_schedule(schedule)
 
     @classmethod
     def unlock_schedule_for_pipeline(cls, pipeline_id):
@@ -74,25 +111,8 @@ class PipelineScheduleService(object):
 
         :param str pipeline_id:
         """
-        cls.update_schedule_for_pipeline(
-            pipeline_id,
-            {'locked': False},
-        )
-
-    @classmethod
-    def update_schedule_for_pipeline(cls, pipeline_id, changes):
-        """Updates a schedule for a pipeline.
-        Schedule must already exist.
-
-        :param str pipeline_id:
-        :param dict changes:
-        """
-        log.info('Updating pipeline: {} with changes {}'.format(pipeline_id, changes))
-
         schedule = cls.fetch_schedule_for_pipeline(pipeline_id)
-
-        for k, v in changes.items():
-            setattr(schedule, k, v)
+        schedule.locked = False
 
         cls.write_pipeline_schedule(schedule)
 
@@ -102,8 +122,44 @@ class PipelineScheduleService(object):
 
         :param PipelineScheduleEntity pipeline_schedule_entity:
         """
-        pipeline_schedule_entity.validate()
+        cls._pre_write(pipeline_schedule_entity)
+        cls._determine_changes(pipeline_schedule_entity)
+        cls._write_entity(pipeline_schedule_entity)
 
+    @classmethod
+    def _pre_write(cls, entity):
+        """Handles pre-write tasks like validation.
+
+        :param PipelineScheduleEntity entity:
+        """
+        entity.validate()
+
+    @classmethod
+    def _write_entity(cls, entity):
+        """Writes an entity to the repository.
+
+        :param PipelineScheduleEntity entity:
+        """
         PipelineScheduleRepository.write_record(
-            PipelineScheduleMapper.to_record(pipeline_schedule_entity),
+            PipelineScheduleMapper.to_record(entity),
         )
+
+    @classmethod
+    def _determine_changes(cls, new_entity):
+        """Determine changes between the current entity and new entity.
+
+        :param PipelineScheduleEntity new_entity:
+        """
+        current_entity = cls.fetch_schedule_for_pipeline(new_entity.pipeline_id)
+        changes = {}
+
+        for key, current_value in current_entity.items():
+            new_value = new_entity.get(key)
+
+            if new_value != current_value:
+                changes[key] = (current_value, new_value)
+
+        log.info('Updating pipeline: {} with changes {}'.format(
+            new_entity.pipeline_id,
+            changes,
+        ))
