@@ -35,10 +35,10 @@ if __name__ == '__main__':
     ))
 
     create_datastore(PipelineScheduleStore(
-        pipeline_id=pipeline.id,
-        schedule=str(6 * 60 * 60),
-        schedule_type='interval',
         next_run_at=datetime.utcnow(),
+        pipeline_id=pipeline.id,
+        schedule=str(60),
+        type='interval',
     ))
 
     url = create_datastore(TaskStore(
