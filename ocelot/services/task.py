@@ -29,11 +29,7 @@ class TaskService(object):
         """
         task_entity = cls.fetch_task_by_id(id)
 
-        log.info({
-            'message': 'Running task',
-            'id': id,
-            'type': task_entity.type,
-        })
+        log.info('Running task: {}:{}'.format(task_entity.type, id))
 
         task_class = TASK_MAP[task_entity.type](
             id=task_entity.id,
