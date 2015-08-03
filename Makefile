@@ -20,4 +20,6 @@ seed:
 test: unit_tests lint
 
 unit_tests:
+	psql -c 'drop database if exists ocelot_test;'
+	psql -c 'create database ocelot_test;'
 	nosetests
