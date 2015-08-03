@@ -38,7 +38,7 @@ if __name__ == '__main__':
         pipeline_id=pipeline.id,
 
         # Interval Schedule
-        schedule=str(60 * 60 * 6),
+        schedule=str(21600),  # 6hrs in seconds
         type='interval',
 
         # Cron schedule
