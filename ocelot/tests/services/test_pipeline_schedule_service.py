@@ -29,3 +29,15 @@ class TestPipelineScheduleService(DatabaseTestCase):
                 PipelineScheduleMapper.to_entity(self.pipeline_schedule_interval),
             ],
         )
+
+    @mock.patch.object(PipelineScheduleRepository, 'write_record')
+    def test_write_pipeline_schedule(self, mock_write_record):
+        """Test that we can write an entity to the repository."""
+        entity = PipelineScheduleMapper.to_entity(self.pipeline_schedule_interval)
+        entity.schedule = '150'
+
+        PipelineScheduleService.write_pipeline_schedule(entity)
+
+        self.assertTrue(mock_write_record.called)
+        record = mock_write_record.call_args[0][0]
+        self.assertEquals(record.schedule, '150')
