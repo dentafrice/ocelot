@@ -1,4 +1,3 @@
-from datetime import datetime
 import json
 
 from sqlalchemy.exc import IntegrityError
@@ -11,6 +10,7 @@ from ocelot.services.datastores import (
     TaskConnectionStore,
     TaskStore,
 )
+from ocelot.services.pipeline_schedule import PipelineScheduleService
 
 
 def create_datastore(datastore):
@@ -35,11 +35,17 @@ if __name__ == '__main__':
     ))
 
     create_datastore(PipelineScheduleStore(
-        next_run_at=datetime.utcnow(),
         pipeline_id=pipeline.id,
-        schedule=str(60),
+
+        # Interval Schedule
+        schedule=str(60 * 60 * 6),
         type='interval',
+
+        # Cron schedule
+        #  schedule='* * * * *',
+        #  type='cron',
     ))
+    PipelineScheduleService.update_next_run_at_for_pipeline(pipeline.id)
 
     url = create_datastore(TaskStore(
         id='cb332d4f-3f51-4a89-b68b-edf1a0b882f0',
