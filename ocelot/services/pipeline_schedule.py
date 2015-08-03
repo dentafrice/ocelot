@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 
+from croniter import croniter
+
 from ocelot.lib import logging
 from ocelot.services.constants.pipeline_schedule import PipelineScheduleTypes
 from ocelot.services.mappers.pipeline_schedule import PipelineScheduleMapper
@@ -79,13 +81,16 @@ class PipelineScheduleService(object):
         """
         schedule = cls.fetch_schedule_for_pipeline(pipeline_id)
 
-        if schedule.type == PipelineScheduleTypes.cron:
-            raise NotImplementedError
-        elif schedule.type == PipelineScheduleTypes.interval:
-            if not schedule.last_run_at:
-                # schedule hasn't ran yet. let's set it to now.
-                schedule.last_run_at = datetime.utcnow()
+        if not schedule.last_run_at:
+            # schedule hasn't ran yet. let's set it to now.
+            schedule.last_run_at = datetime.utcnow()
 
+        if schedule.type == PipelineScheduleTypes.cron:
+            schedule.next_run_at = (
+                croniter(schedule.schedule, schedule.last_run_at).get_next(datetime)
+            )
+
+        elif schedule.type == PipelineScheduleTypes.interval:
             schedule.next_run_at = (
                 schedule.last_run_at + timedelta(
                     seconds=int(schedule.schedule),

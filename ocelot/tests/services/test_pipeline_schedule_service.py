@@ -82,10 +82,28 @@ class TestPipelineScheduleService(DatabaseTestCase):
             datetime(2014, 02, 01),
         )
 
+    @freeze_time('2014-02-01')
     def test_update_next_run_at_cron(self):
         """Test that next_run_at = croniter parse."""
-        # TODO: implement
-        pass
+        self.uninstall_fixture('pipeline_schedule_interval')
+        self.install_fixture('pipeline_schedule_cron')
+
+        # Set last_run_at to expected
+        PipelineScheduleService.update_last_run_at_for_pipeline(
+            self.pipeline.id,
+        )
+
+        # Update next_run_at
+        PipelineScheduleService.update_next_run_at_for_pipeline(
+            self.pipeline.id,
+        )
+
+        # Assert that next_run_at is expected
+        self._assert_pipeline_attribute_equals(
+            self.pipeline.id,
+            'next_run_at',
+            datetime(2014, 2, 1, 0, 5),
+        )
 
     @freeze_time('2014-02-01')
     def test_update_next_run_at_interval(self):
