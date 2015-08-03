@@ -13,7 +13,7 @@ class TestPipelineScheduleMapper(DatabaseTestCase):
             {
                 'pipeline_id': self.pipeline_schedule_cron.pipeline_id,
                 'schedule': self.pipeline_schedule_cron.schedule,
-                'schedule_type': self.pipeline_schedule_cron.schedule_type,
+                'type': self.pipeline_schedule_cron.type,
                 'next_run_at': self.pipeline_schedule_cron.next_run_at,
                 'last_run_at': self.pipeline_schedule_cron.last_run_at,
                 'locked': self.pipeline_schedule_cron.locked,
