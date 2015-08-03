@@ -8,7 +8,7 @@ pipeline_schedule_cron:
   fields:
     pipeline_id: !rel pipeline.id
     schedule: '*/5 * * * *'
-    schedule_type: cron
+    type: cron
     next_run_at: !now -6h
 
 pipeline_schedule_interval:
@@ -16,7 +16,7 @@ pipeline_schedule_interval:
   fields:
     pipeline_id: !rel pipeline.id
     schedule: '160'
-    schedule_type: interval
+    type: interval
     next_run_at: !now -6h
 
 url_task:
