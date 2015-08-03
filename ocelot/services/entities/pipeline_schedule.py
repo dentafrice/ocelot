@@ -8,7 +8,7 @@ class PipelineScheduleEntity(BaseEntity):
     pipeline_id = UUIDType(required=True)
 
     schedule = StringType(required=True)
-    schedule_type = StringType(
+    type = StringType(
         choices=VALID_SCHEDULE_TYPES,
         required=True,
     )
