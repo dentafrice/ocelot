@@ -13,3 +13,12 @@ class TaskConnectionRepository(object):
             Session.query(TaskConnectionStore)
             .filter(TaskConnectionStore.pipeline_id == pipeline_id)
         ).all()
+
+    @classmethod
+    def write_record(cls, record):
+        """Writes a record to the database.
+
+        :param TaskConnectionStore record:
+        """
+        Session.merge(record)
+        Session.commit()
