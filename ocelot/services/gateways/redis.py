@@ -23,7 +23,6 @@ class RedisGateway(object):
         :param str value:
         :param int ttl: (optional) ttl in seconds
         """
-        print key, value, ttl
         if ttl is not None:
             return cls.get_client().setex(key, ttl, value)
 
