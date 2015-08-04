@@ -65,6 +65,8 @@ class PipelineService(object):
 
         :param PipelineEntity pipeline_entity:
         """
+        pipeline_entity.validate()
+
         PipelineRepository.write_record(
             PipelineMapper.to_record(pipeline_entity)
         )
