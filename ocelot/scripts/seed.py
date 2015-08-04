@@ -14,15 +14,17 @@ from ocelot.services.pipeline_schedule import PipelineScheduleService
 
 
 def create_datastore(datastore):
+    """Commits a datastore to the database.
+
+    :param object datastore:
+    """
     try:
         Session.add(datastore)
         Session.commit()
-
-        return datastore
     except IntegrityError:
         Session.rollback()
 
-        return datastore
+    return datastore
 
 
 if __name__ == '__main__':

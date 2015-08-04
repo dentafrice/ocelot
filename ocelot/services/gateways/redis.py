@@ -11,7 +11,7 @@ class RedisGateway(object):
         """Fetches value from the cache with the provided key.
 
         :param str key:
-        :returns: value
+        :returns str: value
         """
         return cls.get_client().get(key)
 

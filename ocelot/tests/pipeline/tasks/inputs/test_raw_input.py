@@ -1,4 +1,4 @@
-from ocelot.pipeline.tasks.inputs import RawInput
+from ocelot.pipeline.tasks.inputs.raw_input import RawInput
 from ocelot.tests import TestCase
 
 

@@ -24,8 +24,8 @@ class TaskService(object):
         """Instantiates and runs task by ID.
 
         :param str id:
-        :param data:
-        :returns: response from task class
+        :param object data:
+        :returns object: response from task class
         """
         task_entity = cls.fetch_task_by_id(id)
 

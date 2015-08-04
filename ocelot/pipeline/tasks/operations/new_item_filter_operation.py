@@ -13,10 +13,17 @@ class NewItemFilterOperation(BaseOperation):
         super(NewItemFilterOperation, self).__init__(*args, **kwargs)
 
     def process(self, data):
-        """Check to see if the data has changed.
+        """Checks to see if the provided data has changed since the filter was last run.
 
-        :param data:
+        If the data has changed:
+            Unmodified data will be returned
+
+        If the data has not changed:
+            StopProcessingException will be raised.
+
+        :param object data:
         :returns: data if filter passes
+        :raises StopProcessingException: if the data has not changed.
         """
         new_items = [
             item for item in data
@@ -31,7 +38,7 @@ class NewItemFilterOperation(BaseOperation):
     def _allow(self, data):
         """Returns whether or not to allow this data to pass the filter.
 
-        :param data:
+        :param object data:
         :returns bool: whether or not we should allow this to pass.
         """
         data_hash = self._hash_data(
@@ -62,7 +69,7 @@ class NewItemFilterOperation(BaseOperation):
 
         :param str data_hash: hash to store
         """
-        return CacheService.set_value_for_key(
+        CacheService.set_value_for_key(
             self._get_cache_key(data_hash),
             data_hash,
         )
@@ -81,6 +88,8 @@ class NewItemFilterOperation(BaseOperation):
 
     def _serialize_data(self, data):
         """Serializes the data to a hashable form.
+
+        Uses pickle to serialize data.
 
         :param str data:
         :returns str: serialized data

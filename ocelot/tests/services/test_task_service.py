@@ -21,7 +21,7 @@ class TestTaskService(DatabaseTestCase):
         self.assertEquals(entity.id, self.url_task.id)
 
     @mock.patch.object(TaskRepository, 'fetch_task_by_id')
-    @mock.patch('ocelot.pipeline.tasks.inputs.URLInput.process')
+    @mock.patch('ocelot.services.constants.task.URLInput.process')
     def test_process_task_with_data(self, mock_process, mock_fetch):
         """Test that the right task class is created and called."""
         mock_fetch.return_value = self.url_task

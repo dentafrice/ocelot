@@ -1,5 +1,5 @@
 class BaseOcelotException(Exception):
-    pass
+    """Base Ocelot service exception."""
 
 
 class ResourceNotFoundException(BaseOcelotException):

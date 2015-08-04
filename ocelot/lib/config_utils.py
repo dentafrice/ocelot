@@ -46,8 +46,6 @@ def load_config(file_path):
                     extended_config_data.update(config_data)
 
                     config_data = extended_config_data
-                #  if extended_config_data:
-                #      config_data.update(extended_config_data)
 
     return config_data
 
@@ -74,10 +72,9 @@ class Config():
         config.get('foo.bar.baz') == 'hey'
 
         :param str key:
-        :param default: default value if there is no value at key.
-        :returns: value stored at key
+        :param default: (optional) default value if there is no value at key.
+        :returns object: value stored at key
         """
-
         def _get(mapping, key_components):
             value = mapping
 

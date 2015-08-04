@@ -2,14 +2,10 @@ from ocelot.pipeline.tasks.base_task import BaseTask
 
 
 class BaseOperation(BaseTask):
-    @property
-    def is_operation(self):
-        return True
-
     def process(self, data):
-        """Accepts and operates on data from upstream.
+        """Processes data in some way and returns the new data.
 
-        :param data:
-        :returns: response
+        :param object data:
+        :returns object: response
         """
         raise NotImplementedError

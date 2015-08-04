@@ -11,7 +11,7 @@ class LogOutput(BaseOutput):
 
     @property
     def log_name(self):
-        """Returns the formatted log name.
+        """Returns the log name prefixed with ocelot.
 
         :returns str: log name
         """
@@ -20,6 +20,6 @@ class LogOutput(BaseOutput):
     def process(self, data):
         """Logs the data to a logger.
 
-        :param data:
+        :param object data:
         """
         logging.getLogger(self.log_name).info(data)

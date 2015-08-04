@@ -1,8 +1,9 @@
 import xml.etree.ElementTree as ET
 
-from ocelot.pipeline.tasks.operations import XMLRSSParseOperation
+from ocelot.pipeline.tasks.operations.xml_rss_parse_operation import XMLRSSParseOperation
 from ocelot.tests import TestCase
 
+# TODO: move to fixtures
 FAKE_RSS_XML = """
 <rss>
     <task>

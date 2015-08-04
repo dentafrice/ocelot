@@ -9,11 +9,11 @@ class SMTPGateway(object):
         """Sends an email via SMTP.
 
         :param dict email_contents:
-            from_email
-            to_email
-            subject
-            plain_message
-            rich_message
+            from_email - Email address to send FROM
+            to_email - Email address to send TO
+            subject - Subject of email
+            plain_message - Plaintext messgae
+            rich_message - Rich/HTML message
         """
         mailer = Mailer({
             'manager.use': 'immediate',

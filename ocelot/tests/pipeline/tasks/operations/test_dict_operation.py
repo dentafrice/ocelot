@@ -1,4 +1,4 @@
-from ocelot.pipeline.tasks.operations import (
+from ocelot.pipeline.tasks.operations.dict_operation import (
     DictCreateOperation,
     DictMapperOperation,
     DictPatternExtractOperation,
@@ -6,6 +6,7 @@ from ocelot.pipeline.tasks.operations import (
 from ocelot.pipeline.exceptions import InvalidConfigurationException
 from ocelot.tests import TestCase
 
+# TODO: move to fixtures
 FAKE_ITEM = {
     'level': {
         'array': [

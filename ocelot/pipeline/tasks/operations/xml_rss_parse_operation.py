@@ -6,7 +6,7 @@ class XMLRSSParseOperation(BaseOperation):
         """Converts an Element into an array of dicts representing
         <item> elements.
 
-        :param data:
+        :param Element data:
         :returns list: list of dicts representing <item>s.
         """
         return map(

@@ -8,6 +8,7 @@ def render_template(template_value, template_variables=None):
 
     :param str template_value: Jinja2 template string
     :param dict template_variables: variables to include in template.
+    :returns str: rendered template
     """
     template_environment = Environment(loader=DictLoader({
         FAKE_TEMPLATE_NAME: template_value,

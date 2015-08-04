@@ -11,9 +11,12 @@ class MessageFormatOperation(BaseOperation):
         super(MessageFormatOperation, self).__init__(*args, **kwargs)
 
     def process(self, data):
-        """Render message with provided data.
+        """Renders a template with the data.
 
-        :param data:
+        Template will be provided with a variable `data` containing the data
+        passed into this operation.
+
+        :param object data:
         :returns str message:
         """
         return templating.render_template(

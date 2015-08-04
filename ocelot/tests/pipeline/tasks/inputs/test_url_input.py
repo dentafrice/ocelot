@@ -1,6 +1,6 @@
 import mock
 
-from ocelot.pipeline.tasks.inputs import URLInput
+from ocelot.pipeline.tasks.inputs.url_input import URLInput
 from ocelot.tests import TestCase
 
 

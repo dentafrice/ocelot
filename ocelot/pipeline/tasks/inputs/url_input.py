@@ -10,11 +10,10 @@ class URLInput(BaseInput):
         super(URLInput, self).__init__(*args, **kwargs)
 
     def process(self, data):
-        """Makes the HTTP request to the provided URL and writes it to the
-        output.
+        """Makes an HTTP request to the provided URL and returns the content.
 
-        :param data:
-        :returns str: HTTP response
+        :param object data:
+        :returns str: request response
         """
         return self._make_request()
 

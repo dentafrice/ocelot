@@ -16,8 +16,17 @@ class DictOperation(BaseOperation):
     def process(self, data):
         """Perform operations on dictionaries.
 
-        :param dict data:
-        :returns dict:
+        If `data` is a list:
+            The operation will be applied to all elements in the list and a new list
+            will be returned.
+
+        Otherwise:
+            The operation will be applied to `data`.
+
+        :param data:
+        :type data: list(dict) or dict
+        :returns: processed data
+        :rtype: list(dict) or dict
         """
         if isinstance(data, list):
             return map(self._process_item, data)
@@ -98,9 +107,28 @@ class DictOperation(BaseOperation):
 
 class DictCreateOperation(DictOperation):
     def _perform_operation(self, item):
-        """Creates a new dict with a provided key.
+        """Creates and returns a new dict.
 
-        :param item:
+        The dict will contain one item with the key that
+        is provided in the config, and the value passed to the operation.
+
+        Example:
+            ```
+            operation = DictCreateOperation(
+                config={
+                    'key': 'fake-key',
+                }
+            )
+            ```
+
+            `operation.process('some-thing')` will return:
+            ```
+            {
+                'fake-key': 'some-thing'
+            }
+            ```
+
+        :param object item:
         :returns dict: constructed dict with key => item.
         """
         return {
@@ -113,7 +141,7 @@ class DictMapperOperation(DictOperation):
         """Creates a new dict based on the provided config.
 
         :param dict item:
-        :returns dict: new constructed dict.
+        :returns dict: new constructed dict
         """
         new_dict = {}
 
@@ -134,11 +162,11 @@ class DictMapperOperation(DictOperation):
         return new_dict
 
     def _extract(self, item, field_config):
-        """Extracts a value out of the item at a path.
+        """Extracts a value out of the item given a path.
 
         :param dict item:
         :param dict field_config:
-        :returns: value
+        :returns object: value
         """
         matches = self._get_matches_for_path(
             item,

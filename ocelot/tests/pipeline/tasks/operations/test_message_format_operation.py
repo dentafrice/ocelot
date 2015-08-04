@@ -1,6 +1,7 @@
-from ocelot.pipeline.tasks.operations import MessageFormatOperation
+from ocelot.pipeline.tasks.operations.message_format_operation import MessageFormatOperation
 from ocelot.tests import TestCase
 
+# TODO: move to fixtures
 FAKE_DICTS = [
     {'title': 't1', 'description': 'foobar'},
     {'title': 't2', 'description': 'foobar2'},

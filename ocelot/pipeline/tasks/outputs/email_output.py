@@ -4,12 +4,13 @@ from ocelot.services.email import EmailService
 
 class EmailOutput(BaseOutput):
     def process(self, data):
-        """Sends email via the EmailService.
+        """Sends an email via the EmailService.
 
         :param dict data:
-            from_email
-            to_email
-            plain_message OR rich_message
+            from_email - Email address to send from.
+            to_email - Email address to send to.
+            plain_message - Plain content of the email (Plain Text).
+            rich_message - Rich content of the email (HTML)
         """
         EmailService.send_email({
             'from_email': data['from_email'],

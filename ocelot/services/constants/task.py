@@ -1,16 +1,18 @@
-from ocelot.pipeline.tasks.inputs import URLInput
-from ocelot.pipeline.tasks.operations import DictCreateOperation
-from ocelot.pipeline.tasks.operations import DictMapperOperation
-from ocelot.pipeline.tasks.operations import DictPatternExtractOperation
-from ocelot.pipeline.tasks.operations import MessageFormatOperation
-from ocelot.pipeline.tasks.operations import NewItemFilterOperation
-from ocelot.pipeline.tasks.operations import XMLParseOperation
-from ocelot.pipeline.tasks.operations import XMLRSSParseOperation
-from ocelot.pipeline.tasks.outputs import LogOutput
-from ocelot.pipeline.tasks.outputs import EmailOutput
+from ocelot.pipeline.tasks.inputs.raw_input import RawInput
+from ocelot.pipeline.tasks.inputs.url_input import URLInput
+from ocelot.pipeline.tasks.operations.dict_operation import DictCreateOperation
+from ocelot.pipeline.tasks.operations.dict_operation import DictMapperOperation
+from ocelot.pipeline.tasks.operations.dict_operation import DictPatternExtractOperation
+from ocelot.pipeline.tasks.operations.message_format_operation import MessageFormatOperation
+from ocelot.pipeline.tasks.operations.new_item_filter_operation import NewItemFilterOperation
+from ocelot.pipeline.tasks.operations.xml_parse_operation import XMLParseOperation
+from ocelot.pipeline.tasks.operations.xml_rss_parse_operation import XMLRSSParseOperation
+from ocelot.pipeline.tasks.outputs.log_output import LogOutput
+from ocelot.pipeline.tasks.outputs.email_output import EmailOutput
 
 
 TASK_MAP = {
+    'RawInput': RawInput,
     'URLInput': URLInput,
     'DictCreateOperation': DictCreateOperation,
     'DictMapperOperation': DictMapperOperation,

@@ -7,7 +7,7 @@ class XMLParseOperation(BaseOperation):
     def process(self, data):
         """Parse a string of XML into an ElementTree Element.
 
-        :param data:
+        :param str data:
         :returns Element:
         """
         return ET.fromstring(data)

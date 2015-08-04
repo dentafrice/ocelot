@@ -1,8 +1,9 @@
 from xml.etree.ElementTree import Element
 
-from ocelot.pipeline.tasks.operations import XMLParseOperation
+from ocelot.pipeline.tasks.operations.xml_parse_operation import XMLParseOperation
 from ocelot.tests import TestCase
 
+# TODO: move to fixtures
 FAKE_XML = """
 <root>
     <thing>heya</thing>

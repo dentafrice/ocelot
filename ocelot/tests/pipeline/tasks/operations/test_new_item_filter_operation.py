@@ -1,7 +1,8 @@
-from ocelot.pipeline.tasks.operations import NewItemFilterOperation
+from ocelot.pipeline.tasks.operations.new_item_filter_operation import NewItemFilterOperation
 from ocelot.pipeline.exceptions import StopProcessingException
 from ocelot.tests import TestCase
 
+# TODO: move to fixtures
 FAKE_DATA = [
     'one',
     'two',

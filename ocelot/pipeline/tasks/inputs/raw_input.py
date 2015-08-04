@@ -10,7 +10,7 @@ class RawInput(BaseInput):
     def process(self, data):
         """Returns the provided data.
 
-        :param data:
-        :returns str: data
+        :param object data:
+        :returns str: data from config
         """
         return self.data

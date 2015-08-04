@@ -25,6 +25,10 @@ class PipelineService(object):
 
     @classmethod
     def run_pipeline_by_id(cls, id):
+        """Runs a pipeline by id.
+
+        :param str id:
+        """
         log.info('Running pipeline: {}'.format(id))
 
         PipelineScheduleService.pre_run_schedule(id)

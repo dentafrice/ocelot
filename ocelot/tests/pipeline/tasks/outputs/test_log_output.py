@@ -1,6 +1,6 @@
 import mock
 
-from ocelot.pipeline.tasks.outputs import LogOutput
+from ocelot.pipeline.tasks.outputs.log_output import LogOutput
 from ocelot.tests import TestCase
 
 FAKE_DATA = [1, 2, 3]

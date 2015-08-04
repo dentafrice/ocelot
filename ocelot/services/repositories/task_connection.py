@@ -7,7 +7,7 @@ class TaskConnectionRepository(object):
         """Fetches list of task connections for a pipeline id.
 
         :param str pipeline_id:
-        :returns list: list of task connection records (dict)
+        :returns list: TaskConnectionStore
         """
         return (
             Session.query(TaskConnectionStore)
