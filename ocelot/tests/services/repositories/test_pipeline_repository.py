@@ -1,5 +1,3 @@
-import uuid
-
 from ocelot.services.entities.pipeline import PipelineEntity
 from ocelot.services.mappers.pipeline import PipelineMapper
 from ocelot.services.repositories.pipeline import PipelineRepository

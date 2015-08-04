@@ -16,3 +16,12 @@ class TaskRepository(object):
             .filter(TaskStore.id == id)
             .one()
         )
+
+    @classmethod
+    def write_record(cls, record):
+        """Writes a record to the database.
+
+        :param TaskStore record:
+        """
+        Session.merge(record)
+        Session.commit()

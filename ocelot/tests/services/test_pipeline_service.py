@@ -1,4 +1,5 @@
 import mock
+import uuid
 
 from ocelot.pipeline.exceptions import StopProcessingException
 from ocelot.services.entities.pipeline import PipelineEntity
