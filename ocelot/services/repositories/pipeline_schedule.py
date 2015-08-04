@@ -1,25 +1,23 @@
 from datetime import datetime
 
-from ocelot.services.datastores import NoResultFound, PipelineScheduleStore, Session
-from ocelot.services.exceptions import ResourceNotFoundException
+from ocelot.services.datastores import PipelineScheduleStore, Session
+from ocelot.services.repositories import utils
 
 
 class PipelineScheduleRepository(object):
     @classmethod
+    @utils.handle_no_result_found
     def fetch_schedule_for_pipeline(cls, pipeline_id):
         """Returns PipelineScheduleStore for a pipeline_id.
 
         :param str pipeline_id:
         :returns PipelineScheduleStore:
         """
-        try:
-            return (
-                Session.query(PipelineScheduleStore)
-                .filter(PipelineScheduleStore.pipeline_id == pipeline_id)
-                .one()
-            )
-        except NoResultFound:
-            raise ResourceNotFoundException
+        return (
+            Session.query(PipelineScheduleStore)
+            .filter(PipelineScheduleStore.pipeline_id == pipeline_id)
+            .one()
+        )
 
     @classmethod
     def fetch_schedules_to_run(cls):
