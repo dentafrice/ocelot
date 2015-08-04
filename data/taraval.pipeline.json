@@ -20,7 +20,6 @@
         "rss": {
             "type": "XMLRSSParseOperation"
         },
-
         "item_mapper": {
             "type": "DictMapperOperation",
             "config": {
@@ -35,6 +34,51 @@
                         "type": "extract",
                         "config": {
                             "path": "$.link"
+                        }
+                    }
+                }
+            }
+        },
+        "message_format": {
+            "type": "MessageFormatOperation",
+            "config": {
+                "message": "New Taraval Police Items:\n---\n{% for item in data %}{{item.title}}\n{{item.link}}\n\n{% endfor %}"
+            }
+        },
+        "message_creator": {
+            "type": "DictCreateOperation",
+            "config": {
+                "config": {
+                    "key": "plain_message"
+                }
+            }
+        },
+        "email_mapper": {
+            "type": "DictMapperOperation",
+            "config": {
+                "config": {
+                    "plain_message": {
+                        "type": "extract",
+                        "config": {
+                            "path": "$.plain_message"
+                        }
+                    },
+                    "from_email": {
+                        "type": "insert",
+                        "config": {
+                            "value": "ocelot@caleb.io"
+                        }
+                    },
+                    "subject": {
+                        "type": "insert",
+                        "config": {
+                            "value": "New Taraval Police Items"
+                        }
+                    },
+                    "to_email": {
+                        "type": "insert",
+                        "config": {
+                            "value": "me@caleb.io"
                         }
                     }
                 }
@@ -55,6 +99,15 @@
             "item_mapper"
         ],
         "item_mapper": [
+            "message_format"
+        ],
+        "message_format": [
+            "message_creator"
+        ],
+        "message_creator": [
+            "email_mapper"
+        ],
+        "email_mapper": [
             "email_output"
         ]
     }
