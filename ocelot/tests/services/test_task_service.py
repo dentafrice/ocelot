@@ -1,5 +1,7 @@
 import mock
 
+from ocelot.services.entities.task import TaskEntity
+from ocelot.services.exceptions import ResourceNotFoundException
 from ocelot.services.task import (
     TaskRepository,
     TaskService,
@@ -28,3 +30,17 @@ class TestTaskService(DatabaseTestCase):
 
         TaskService.process_task_with_data(self.url_task.id, 'fake_data')
         mock_process.assert_called_once_with('fake_data')
+
+    def test_write_task(self):
+        """Test that the provided entity gets written to the repository."""
+        entity = TaskEntity.get_mock_object()
+
+        with self.assertRaises(ResourceNotFoundException):
+            TaskService.fetch_task_by_id(entity.id)
+
+        TaskService.write_task(entity)
+
+        self.assertEquals(
+            TaskService.fetch_task_by_id(entity.id),
+            entity,
+        )

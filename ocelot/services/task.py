@@ -37,3 +37,15 @@ class TaskService(object):
         )
 
         return task_class.process(data)
+
+    @classmethod
+    def write_task(cls, task):
+        """Writes TaskEntity to the repository.
+
+        :param TaskEntity task:
+        """
+        task.validate()
+
+        TaskRepository.write_record(
+            TaskMapper.to_record(task),
+        )
