@@ -9,10 +9,19 @@ class PipelineRepository(object):
         """Returns pipeline record by id.
 
         :param str id:
-        :returns TaskStore: record
+        :returns PipelineStore: record
         """
         return (
             Session.query(PipelineStore)
             .filter(PipelineStore.id == id)
             .one()
         )
+
+    @classmethod
+    def write_record(cls, record):
+        """Writes a record to the database.
+
+        :param PipelineStore record:
+        """
+        Session.merge(record)
+        Session.commit()
