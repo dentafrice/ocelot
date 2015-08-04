@@ -1,5 +1,6 @@
 import mock
 
+from ocelot.services.entities.task_connection import TaskConnectionEntity
 from ocelot.services.task_connection import (
     TaskConnectionRepository,
     TaskConnectionService,
@@ -48,3 +49,21 @@ class TestTaskConnectionService(DatabaseTestCase):
             self.raw_input_to_log_connection.from_task_id,
             self.url_to_log_connection.from_task_id,
         ])
+
+    def test_write_task_connection(self):
+        """Test that the provided entity gets written to the repository."""
+        entity = TaskConnectionEntity.get_mock_object()
+
+        self.assertEquals(
+            TaskConnectionService.fetch_task_connections_for_pipeline(entity.pipeline_id),
+            [],
+        )
+
+        TaskConnectionService.write_task_connection(entity)
+
+        self.assertEquals(
+            TaskConnectionService.fetch_task_connections_for_pipeline(entity.pipeline_id),
+            [
+                entity,
+            ],
+        )

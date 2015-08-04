@@ -45,3 +45,15 @@ class TaskConnectionService(object):
             'graph': graph_from_to,
             'source_ids': list(source_ids),
         }
+
+    @classmethod
+    def write_task_connection(cls, task_connection_entity):
+        """Writes a TaskConnectionEntity to the database.
+
+        :param TaskConnectionEntity task_connection_entity:
+        """
+        task_connection_entity.validate()
+
+        TaskConnectionRepository.write_record(
+            TaskConnectionMapper.to_record(task_connection_entity)
+        )
