@@ -1,5 +1,6 @@
 import json
 
+from ocelot import config
 from ocelot.services import datastores
 from ocelot.services.pipeline_import import PipelineImportService
 
@@ -18,8 +19,8 @@ if __name__ == '__main__':
             pipeline.id,
         )
 
-    create_pipeline('xkcd')
-    #  create_pipeline('taraval')
+    for seed_file in config.get('seed_files', []):
+        create_pipeline(seed_file)
 
 #      pipeline = create_datastore(PipelineStore(
 #          id='96feda22-f80d-4cee-ad51-4e18de0b655a',

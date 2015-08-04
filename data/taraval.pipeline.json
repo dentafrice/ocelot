@@ -40,11 +40,8 @@
                 }
             }
         },
-        "log_output": {
-            "type": "LogOutput",
-            "config": {
-                "log_name": "test"
-            }
+        "email_output": {
+            "type": "EmailOutput"
         }
     },
     "task_connections": {
@@ -58,7 +55,7 @@
             "item_mapper"
         ],
         "item_mapper": [
-            "log_output"
+            "email_output"
         ]
     }
 }
