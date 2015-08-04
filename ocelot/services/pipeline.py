@@ -58,3 +58,13 @@ class PipelineService(object):
                 pass
 
         PipelineScheduleService.post_run_schedule(id)
+
+    @classmethod
+    def write_pipeline(cls, pipeline_entity):
+        """Writes a PipelineEntity to the database.
+
+        :param PipelineEntity pipeline_entity:
+        """
+        PipelineRepository.write_record(
+            PipelineMapper.to_record(pipeline_entity)
+        )

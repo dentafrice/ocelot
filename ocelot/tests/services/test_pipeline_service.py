@@ -2,7 +2,10 @@ import mock
 import uuid
 
 from ocelot.pipeline.exceptions import StopProcessingException
+from ocelot.services.entities.pipeline import PipelineEntity
+from ocelot.services.exceptions import ResourceNotFoundException
 from ocelot.services.pipeline import (
+    PipelineMapper,
     PipelineRepository,
     PipelineScheduleService,
     PipelineService,
@@ -180,4 +183,18 @@ class TestPipelineService(DatabaseTestCase):
         self.assertEquals(
             mock_process.call_args_list[3][0],
             (e, 'd_response'),
+        )
+
+    def test_write_pipeline(self):
+        """Test that the provided entity gets written to the repository."""
+        entity = PipelineEntity.get_mock_object()
+
+        with self.assertRaises(ResourceNotFoundException):
+            PipelineService.fetch_pipeline_by_id(entity.id)
+
+        PipelineService.write_pipeline(entity)
+
+        self.assertEquals(
+            PipelineService.fetch_pipeline_by_id(entity.id),
+            entity,
         )
