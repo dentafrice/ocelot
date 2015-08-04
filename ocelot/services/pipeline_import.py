@@ -31,8 +31,10 @@ class PipelineImportService(object):
         # Create PipelineSchedule
         pipeline_schedule_entity = PipelineScheduleEntity(pipeline_data['pipeline_schedule'])
         pipeline_schedule_entity.pipeline_id = pipeline_entity.id
-        pipeline_schedule_entity.next_run_at = PipelineScheduleService.calculate_next_run_at_for_schedule(
-            pipeline_schedule_entity
+        pipeline_schedule_entity.next_run_at = (
+            PipelineScheduleService.calculate_next_run_at_for_schedule(
+                pipeline_schedule_entity
+            )
         )
         pipeline_schedule_entity.validate()
 
@@ -54,8 +56,6 @@ class PipelineImportService(object):
             from_task_id = task_alias_to_id[from_alias]
 
             for to_alias in to_aliases:
-                to_task_id = task_alias_to_id[to_alias]
-
                 task_connection_entity = TaskConnectionEntity({
                     'from_task_id': from_task_id,
                     'to_task_id': task_alias_to_id[to_alias],
