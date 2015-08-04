@@ -19,7 +19,7 @@ if __name__ == '__main__':
         )
 
     create_pipeline('xkcd')
-    create_pipeline('taraval')
+    #  create_pipeline('taraval')
 
 #      pipeline = create_datastore(PipelineStore(
 #          id='96feda22-f80d-4cee-ad51-4e18de0b655a',
