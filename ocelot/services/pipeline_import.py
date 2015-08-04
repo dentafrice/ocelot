@@ -78,3 +78,5 @@ class PipelineImportService(object):
         # Save TaskConnections
         for task_connection_entity in task_connection_entities:
             TaskConnectionService.write_task_connection(task_connection_entity)
+
+        return pipeline_entity

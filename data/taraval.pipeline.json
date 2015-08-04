@@ -1,0 +1,64 @@
+{
+    "pipeline": {
+        "id": "86b48bf6-6e55-4a2e-991a-9c15f1f77b80",
+        "name": "Taraval Police Monitor"
+    },
+    "pipeline_schedule": {
+        "type": "interval",
+        "schedule": "21600"
+    },
+    "tasks": {
+        "url_input": {
+            "type": "URLInput",
+            "config": {
+                "url": "https://gist.githubusercontent.com/dentafrice/0713ec11b44ae7df9873/raw/a1e1a99f45606a91839b939eb003d5490f871ba3/test.rss"
+            }
+        },
+        "xml_parser": {
+            "type": "XMLParseOperation"
+        },
+        "rss": {
+            "type": "XMLRSSParseOperation"
+        },
+
+        "item_mapper": {
+            "type": "DictMapperOperation",
+            "config": {
+                "config": {
+                    "title": {
+                        "type": "extract",
+                        "config": {
+                            "path": "$.title"
+                        }
+                    },
+                    "link": {
+                        "type": "extract",
+                        "config": {
+                            "path": "$.link"
+                        }
+                    }
+                }
+            }
+        },
+        "log_output": {
+            "type": "LogOutput",
+            "config": {
+                "log_name": "test"
+            }
+        }
+    },
+    "task_connections": {
+        "url_input": [
+            "xml_parser"
+        ],
+        "xml_parser": [
+            "rss"
+        ],
+        "rss": [
+            "item_mapper"
+        ],
+        "item_mapper": [
+            "log_output"
+        ]
+    }
+}

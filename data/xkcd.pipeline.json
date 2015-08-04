@@ -1,0 +1,137 @@
+{
+    "pipeline": {
+        "id": "9aa97f4e-387d-4d06-ac00-f4fc344514da",
+        "name": "XKCD Monitor"
+    },
+    "pipeline_schedule": {
+        "type": "interval",
+        "schedule": "21600"
+    },
+    "tasks": {
+        "url_input": {
+            "type": "URLInput",
+            "config": {
+                "url": "http://xkcd.com/rss.xml"
+            }
+        },
+        "xml_parser": {
+            "type": "XMLParseOperation"
+        },
+        "rss": {
+            "type": "XMLRSSParseOperation"
+        },
+        "new_filter": {
+            "type": "NewItemFilterOperation",
+            "config": {
+                "identifier": "xkcd-items"
+            }
+        },
+        "item_extractor": {
+            "type": "DictMapperOperation",
+            "config": {
+                "config": {
+                    "title": {
+                        "type": "extract",
+                        "config": {
+                            "path": "$.title"
+                        }
+                    },
+                    "description": {
+                        "type": "extract",
+                        "config": {
+                            "path": "$.description"
+                        }
+                    }
+                }
+            }
+        },
+        "link_extractor": {
+            "type": "DictPatternExtractOperation",
+            "config": {
+                "config": {
+                    "paths": [
+                        "$.description"
+                    ],
+                    "pattern": "src=\"(.*?)\""
+                }
+            }
+        },
+        "message_format": {
+            "type": "MessageFormatOperation",
+            "config": {
+                "message": "New XKCD Items:\n---\n{% for item in data %}{{item.title}}\n{{item.description}}\n\n{% endfor %}"
+            }
+        },
+        "message_creator": {
+            "type": "DictCreateOperation",
+            "config": {
+                "config": {
+                    "key": "plain_message"
+                }
+            }
+        },
+        "email_mapper": {
+            "type": "DictMapperOperation",
+            "config": {
+                "config": {
+                    "plain_message": {
+                        "type": "extract",
+                        "config": {
+                            "path": "$.plain_message"
+                        }
+                    },
+                    "from_email": {
+                        "type": "insert",
+                        "config": {
+                            "value": "ocelot@caleb.io"
+                        }
+                    },
+                    "subject": {
+                        "type": "insert",
+                        "config": {
+                            "value": "New XKCD Items"
+                        }
+                    },
+                    "to_email": {
+                        "type": "insert",
+                        "config": {
+                            "value": "me@caleb.io"
+                        }
+                    }
+                }
+            }
+        },
+        "email_output": {
+            "type": "EmailOutput"
+        }
+    },
+    "task_connections": {
+        "url_input": [
+            "xml_parser"
+        ],
+        "xml_parser": [
+            "rss"
+        ],
+        "rss": [
+            "new_filter"
+        ],
+        "new_filter": [
+            "item_extractor"
+        ],
+        "item_extractor": [
+            "link_extractor"
+        ],
+        "link_extractor": [
+            "message_format"
+        ],
+        "message_format": [
+            "message_creator"
+        ],
+        "message_creator": [
+            "email_mapper"
+        ],
+        "email_mapper": [
+            "email_output"
+        ]
+    }
+}
