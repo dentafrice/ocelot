@@ -4,6 +4,7 @@ from croniter import croniter
 
 from ocelot.lib import logging
 from ocelot.services.constants.pipeline_schedule import PipelineScheduleTypes
+from ocelot.services.exceptions import ResourceNotFoundException
 from ocelot.services.mappers.pipeline_schedule import PipelineScheduleMapper
 from ocelot.services.repositories.pipeline_schedule import PipelineScheduleRepository
 
@@ -80,24 +81,28 @@ class PipelineScheduleService(object):
         :param str pipeline_id:
         """
         schedule = cls.fetch_schedule_for_pipeline(pipeline_id)
+        schedule.next_run_at = cls.calculate_next_run_at_for_schedule(schedule)
 
-        if not schedule.last_run_at:
-            # schedule hasn't ran yet. let's set it to now.
-            schedule.last_run_at = datetime.utcnow()
+        cls.write_pipeline_schedule(schedule)
 
+    @classmethod
+    def calculate_next_run_at_for_schedule(cls, schedule):
+        """Calculate next_run_at for a PipelineScheduleEntity.
+
+        :param PipelineScheduleEntity schedule:
+        :returns datetime: next_run_at
+        """
         if schedule.type == PipelineScheduleTypes.cron:
-            schedule.next_run_at = (
+            return (
                 croniter(schedule.schedule, schedule.last_run_at).get_next(datetime)
             )
 
         elif schedule.type == PipelineScheduleTypes.interval:
-            schedule.next_run_at = (
-                schedule.last_run_at + timedelta(
+            return (
+                (schedule.last_run_at or datetime.utcnow()) + timedelta(
                     seconds=int(schedule.schedule),
                 )
             )
-
-        cls.write_pipeline_schedule(schedule)
 
     @classmethod
     def lock_schedule_for_pipeline(cls, pipeline_id):
@@ -155,16 +160,20 @@ class PipelineScheduleService(object):
 
         :param PipelineScheduleEntity new_entity:
         """
-        current_entity = cls.fetch_schedule_for_pipeline(new_entity.pipeline_id)
-        changes = {}
+        try:
+            current_entity = cls.fetch_schedule_for_pipeline(new_entity.pipeline_id)
 
-        for key, current_value in current_entity.items():
-            new_value = new_entity.get(key)
+            changes = {}
 
-            if new_value != current_value:
-                changes[key] = (current_value, new_value)
+            for key, current_value in current_entity.items():
+                new_value = new_entity.get(key)
 
-        log.info('Updating pipeline: {} with changes {}'.format(
-            new_entity.pipeline_id,
-            changes,
-        ))
+                if new_value != current_value:
+                    changes[key] = (current_value, new_value)
+
+            log.info('Updating Pipeline: {} with changes {}'.format(
+                new_entity.pipeline_id,
+                changes,
+            ))
+        except ResourceNotFoundException:
+            pass

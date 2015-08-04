@@ -1,11 +1,9 @@
 import mock
-import uuid
 
 from ocelot.pipeline.exceptions import StopProcessingException
 from ocelot.services.entities.pipeline import PipelineEntity
 from ocelot.services.exceptions import ResourceNotFoundException
 from ocelot.services.pipeline import (
-    PipelineMapper,
     PipelineRepository,
     PipelineScheduleService,
     PipelineService,
