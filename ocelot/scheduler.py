@@ -17,7 +17,6 @@ if __name__ == '__main__':
 
     try:
         while True:
-            log.info('Fetching pipelines to run')
             pipeline_schedules = PipelineScheduleService.fetch_schedules_to_run()
 
             log.info('Found {} pipelines to run'.format(len(pipeline_schedules)))
@@ -25,7 +24,6 @@ if __name__ == '__main__':
             for schedule in PipelineScheduleService.fetch_schedules_to_run():
                 PipelineService.run_pipeline_by_id(schedule.pipeline_id)
 
-            log.info('Sleeping {} seconds'.format(SLEEP_SECONDS))
             time.sleep(SLEEP_SECONDS)
     except KeyboardInterrupt:
         pass
