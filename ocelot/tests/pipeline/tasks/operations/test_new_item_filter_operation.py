@@ -14,9 +14,7 @@ class TestNewItemFilterOperation(TestCase):
     def test_process_allowed(self):
         """Test that when items haven't been
         seen before that they are returned."""
-        new_item_filter = NewItemFilterOperation(
-            identifier='fake_identifier',
-        )
+        new_item_filter = NewItemFilterOperation()
 
         self.assertEquals(
             new_item_filter.process(FAKE_DATA),
@@ -26,9 +24,7 @@ class TestNewItemFilterOperation(TestCase):
     def test_process_allowed_only_new(self):
         """Test that only new items that haven't been
         seen before are returned."""
-        new_item_filter = NewItemFilterOperation(
-            identifier='fake_identifier',
-        )
+        new_item_filter = NewItemFilterOperation()
 
         self.assertEquals(
             new_item_filter.process(FAKE_DATA[:2]),
@@ -42,9 +38,7 @@ class TestNewItemFilterOperation(TestCase):
 
     def test_no_new_raises_exception(self):
         """Test that StopProcessingException is raised if there are no new items."""
-        new_item_filter = NewItemFilterOperation(
-            identifier='fake_identifier',
-        )
+        new_item_filter = NewItemFilterOperation()
 
         new_item_filter.process(FAKE_DATA)
 

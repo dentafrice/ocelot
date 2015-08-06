@@ -36,10 +36,7 @@
             }
         },
         "new_filter": {
-            "type": "NewItemFilterOperation",
-            "config": {
-                "identifier": "taraval-items"
-            }
+            "type": "NewItemFilterOperation"
         },
         "item_mapper": {
             "type": "DictMapperOperation",

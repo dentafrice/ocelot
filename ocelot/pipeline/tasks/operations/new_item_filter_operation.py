@@ -7,11 +7,6 @@ from ocelot.services.cache import CacheService
 
 
 class NewItemFilterOperation(BaseOperation):
-    def __init__(self, identifier, *args, **kwargs):
-        self.identifier = identifier
-
-        super(NewItemFilterOperation, self).__init__(*args, **kwargs)
-
     def process(self, data):
         """Checks to see if the provided data has changed since the filter was last run.
 
@@ -82,7 +77,7 @@ class NewItemFilterOperation(BaseOperation):
         """
         return 'cache:{}:{}:{}'.format(
             self.__class__.__name__,
-            self.identifier,
+            self.id,
             data_hash,
         )
 

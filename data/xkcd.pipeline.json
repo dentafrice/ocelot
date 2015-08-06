@@ -21,10 +21,7 @@
             "type": "XMLRSSParseOperation"
         },
         "new_filter": {
-            "type": "NewItemFilterOperation",
-            "config": {
-                "identifier": "xkcd-items"
-            }
+            "type": "NewItemFilterOperation"
         },
         "item_extractor": {
             "type": "DictMapperOperation",
