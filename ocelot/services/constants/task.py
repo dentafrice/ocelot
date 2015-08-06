@@ -1,6 +1,7 @@
 from ocelot.pipeline.tasks.inputs.raw_input import RawInput
 from ocelot.pipeline.tasks.inputs.url_input import URLInput
 from ocelot.pipeline.tasks.operations.dict.dict_create_operation import DictCreateOperation
+from ocelot.pipeline.tasks.operations.dict.dict_filter_operation import DictFilterOperation
 from ocelot.pipeline.tasks.operations.dict.dict_mapper_operation import DictMapperOperation
 from ocelot.pipeline.tasks.operations.dict.dict_pattern_extract_operation import (
     DictPatternExtractOperation,
@@ -17,6 +18,7 @@ TASK_MAP = {
     'RawInput': RawInput,
     'URLInput': URLInput,
     'DictCreateOperation': DictCreateOperation,
+    'DictFilterOperation': DictFilterOperation,
     'DictMapperOperation': DictMapperOperation,
     'DictPatternExtractOperation': DictPatternExtractOperation,
     'MessageFormatOperation': MessageFormatOperation,
