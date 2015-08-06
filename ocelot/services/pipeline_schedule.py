@@ -174,9 +174,10 @@ class PipelineScheduleService(object):
                 if new_value != current_value:
                     changes[key] = (current_value, new_value)
 
-            log.info('Updating Pipeline: {} with changes {}'.format(
-                new_entity.pipeline_id,
-                changes,
-            ))
+            if changes:
+                log.info('Updating Pipeline: {} with changes {}'.format(
+                    new_entity.pipeline_id,
+                    changes,
+                ))
         except ResourceNotFoundException:
             pass
