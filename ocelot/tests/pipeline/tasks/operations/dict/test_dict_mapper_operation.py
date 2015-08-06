@@ -1,56 +1,13 @@
 from ocelot.pipeline.tasks.operations.dict_operation import (
-    DictCreateOperation,
     DictMapperOperation,
-    DictPatternExtractOperation,
 )
-from ocelot.pipeline.exceptions import InvalidConfigurationException
-from ocelot.tests import TestCase
-
-# TODO: move to fixtures
-FAKE_ITEM = {
-    'level': {
-        'array': [
-            {
-                'name': 'item1',
-                'level': {
-                    'value': 'sup',
-                }
-            },
-
-            {
-                'name': 'item2',
-                'level': {
-                    'value': 'sup',
-                }
-            },
-        ],
-
-        'deep': {
-            'value': 'hey',
-            'image': 'this is <img src="http://some.url/image.png"> cool',
-        },
-    }
-}
+from ocelot.tests import DatabaseTestCase
 
 
-class TestDictCreateOperation(TestCase):
-    def test_creates_dict(self):
-        """Test that a dict is returned with the provided key => item."""
-        create = DictCreateOperation(
-            config={
-                'key': 'fake_key',
-            }
-        )
+class TestDictMapperOperation(DatabaseTestCase):
+    def setUp(self):
+        self.install_fixture('fake_dict')
 
-        self.assertEquals(
-            create.process('hello there'),
-            {
-                'fake_key': 'hello there',
-            },
-        )
-
-
-class TestDictMapperOperation(TestCase):
     def test_values_are_extracted(self):
         """Test that a value can be extracted."""
         mapper = DictMapperOperation(
@@ -65,7 +22,7 @@ class TestDictMapperOperation(TestCase):
         )
 
         self.assertEquals(
-            mapper.process(FAKE_ITEM),
+            mapper.process(self.fake_dict),
             {
                 'field1': 'hey',
             },
@@ -86,7 +43,7 @@ class TestDictMapperOperation(TestCase):
         )
 
         self.assertEquals(
-            mapper.process(FAKE_ITEM),
+            mapper.process(self.fake_dict),
             {
                 'field1': None,
             },
@@ -106,9 +63,9 @@ class TestDictMapperOperation(TestCase):
         )
 
         self.assertEquals(
-            mapper.process(FAKE_ITEM),
+            mapper.process(self.fake_dict),
             {
-                'field1': FAKE_ITEM['level']['deep'],
+                'field1': self.fake_dict['level']['deep'],
             },
         )
 
@@ -126,7 +83,7 @@ class TestDictMapperOperation(TestCase):
         )
 
         self.assertEquals(
-            mapper.process(FAKE_ITEM),
+            mapper.process(self.fake_dict),
             {
                 'field1': 'sup',
             },
@@ -146,43 +103,8 @@ class TestDictMapperOperation(TestCase):
         )
 
         self.assertEquals(
-            mapper.process(FAKE_ITEM),
+            mapper.process(self.fake_dict),
             {
                 'field1': 'foo bar baz',
             }
         )
-
-
-class TestDictPatternExtractOperation(TestCase):
-    def test_patterns_can_be_extracted(self):
-        """Test that you can run a pattern on a path."""
-        extractor = DictPatternExtractOperation(
-            config={
-                'paths': [
-                    '$.level.deep.image'
-                ],
-
-                'pattern': 'src="(.*?)"',
-            }
-        )
-
-        self.assertEquals(
-            extractor.process(FAKE_ITEM)['level']['deep']['image'],
-            'http://some.url/image.png',
-        )
-
-    def test_path_not_string(self):
-        """Test that if a path doesn't match a string
-        that an exception is raised."""
-        extractor = DictPatternExtractOperation(
-            config={
-                'paths': [
-                    '$.level.deep'
-                ],
-
-                'pattern': 'src="(.*?)"',
-            }
-        )
-
-        with self.assertRaises(InvalidConfigurationException):
-            extractor.process(FAKE_ITEM)

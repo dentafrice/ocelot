@@ -1,3 +1,19 @@
+fake_dict:
+  fields:
+    level:
+      array:
+        -
+          name: item1
+          level:
+            value: sup
+        -
+          name: item2
+          level:
+            value: sup
+      deep:
+        value: hey
+        image: 'this is <img src="http://some.url/image.png"> cool'
+
 pipeline:
   model: PipelineStore
   fields:
