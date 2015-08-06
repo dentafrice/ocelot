@@ -4,3 +4,4 @@ extends:
 
 seed_files:
   - xkcd
+  - taraval
