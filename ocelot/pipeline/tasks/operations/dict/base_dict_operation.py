@@ -26,9 +26,23 @@ class BaseDictOperation(BaseOperation):
         :rtype: list(dict) or dict
         """
         if isinstance(data, list):
-            return map(self._process_item, data)
+            return filter(
+                self._allow_item,
+                map(self._process_item, data),
+            )
         else:
-            return self._process_item(data)
+            processed_data = self._process_item(data)
+
+            if self._allow_item:
+                return processed_data
+
+    def _allow_item(self, item):
+        """Returns whether or not to allow an item to be returned from the operation.
+
+        :param dict item:
+        :returns boolean:
+        """
+        return True
 
     def _process_item(self, item):
         """Processes an individual dict by applying an operation to it.
