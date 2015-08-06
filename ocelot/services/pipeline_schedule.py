@@ -104,6 +104,9 @@ class PipelineScheduleService(object):
                 )
             )
 
+        elif schedule.type == PipelineScheduleTypes.manual:
+            return None
+
     @classmethod
     def lock_schedule_for_pipeline(cls, pipeline_id):
         """Locks a schedule for a pipeline.

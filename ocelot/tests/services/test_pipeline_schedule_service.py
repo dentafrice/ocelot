@@ -13,10 +13,11 @@ from ocelot.tests import DatabaseTestCase
 class TestPipelineScheduleService(DatabaseTestCase):
     def setUp(self):
         self.install_fixture('pipeline')
-        self.install_fixture('pipeline_schedule_interval')
 
     def test_fetch_schedule_for_pipeline(self):
         """Test that you can fetch schedules for a pipeline."""
+        self.install_fixture('pipeline_schedule_interval')
+
         self.assertEqual(
             PipelineScheduleService.fetch_schedule_for_pipeline(
                 self.pipeline.id,
@@ -27,6 +28,8 @@ class TestPipelineScheduleService(DatabaseTestCase):
 
     def test_fetch_schedules_to_run(self):
         """Test that schedules that need to run are returned."""
+        self.install_fixture('pipeline_schedule_interval')
+
         self.assertEqual(
             PipelineScheduleService.fetch_schedules_to_run(),
             [
@@ -39,30 +42,40 @@ class TestPipelineScheduleService(DatabaseTestCase):
     @mock.patch.object(PipelineScheduleService, 'lock_schedule_for_pipeline')
     def test_pre_run_schedule_locks(self, mock_lock):
         """Test that the schedule is locked."""
+        self.install_fixture('pipeline_schedule_interval')
+
         PipelineScheduleService.pre_run_schedule(self.pipeline.id)
         mock_lock.assert_called_once_with(self.pipeline.id)
 
     @mock.patch.object(PipelineScheduleService, 'unlock_schedule_for_pipeline')
     def test_post_run_schedule_unlocks(self, mock_unlock):
         """Test that the schedule is locked."""
+        self.install_fixture('pipeline_schedule_interval')
+
         PipelineScheduleService.post_run_schedule(self.pipeline.id)
         mock_unlock.assert_called_once_with(self.pipeline.id)
 
     @mock.patch.object(PipelineScheduleService, 'update_last_run_at_for_pipeline')
     def test_post_run_updates_last_run_at(self, mock_update):
         """Test that last_run_at is updated."""
+        self.install_fixture('pipeline_schedule_interval')
+
         PipelineScheduleService.post_run_schedule(self.pipeline.id)
         mock_update.assert_called_once_with(self.pipeline.id)
 
     @mock.patch.object(PipelineScheduleService, 'update_next_run_at_for_pipeline')
     def test_post_run_updates_next_run_at(self, mock_update):
         """Test that next_run_at is updated."""
+        self.install_fixture('pipeline_schedule_interval')
+
         PipelineScheduleService.post_run_schedule(self.pipeline.id)
         mock_update.assert_called_once_with(self.pipeline.id)
 
     @freeze_time('2014-02-01')
     def test_update_last_run_at(self):
         """Test that last_run_at is updated to the latest date."""
+        self.install_fixture('pipeline_schedule_interval')
+
         # Assert that last_run_at is empty
         self._assert_pipeline_attribute_equals(
             self.pipeline.id,
@@ -85,7 +98,6 @@ class TestPipelineScheduleService(DatabaseTestCase):
     @freeze_time('2014-02-01')
     def test_update_next_run_at_cron(self):
         """Test that next_run_at = croniter parse."""
-        self.uninstall_fixture('pipeline_schedule_interval')
         self.install_fixture('pipeline_schedule_cron')
 
         # Set last_run_at to expected
@@ -108,6 +120,8 @@ class TestPipelineScheduleService(DatabaseTestCase):
     @freeze_time('2014-02-01')
     def test_update_next_run_at_interval(self):
         """Test that next_run_at = last_run_at + interval."""
+        self.install_fixture('pipeline_schedule_interval')
+
         # Update last_run_at
         PipelineScheduleService.update_last_run_at_for_pipeline(
             self.pipeline.id,
@@ -129,9 +143,33 @@ class TestPipelineScheduleService(DatabaseTestCase):
             schedule.last_run_at + timedelta(seconds=int(schedule.schedule)),
         )
 
+    @freeze_time('2014-02-01')
+    def test_update_next_run_at_manual(self):
+        """Test that next_run_at = none."""
+        self.install_fixture('pipeline_schedule_manual')
+
+        # Update last_run_at
+        PipelineScheduleService.update_last_run_at_for_pipeline(
+            self.pipeline.id,
+        )
+
+        # Update next_run_at
+        PipelineScheduleService.update_next_run_at_for_pipeline(
+            self.pipeline.id,
+        )
+
+        # Assert next_run_at is updated to None
+        self._assert_pipeline_attribute_equals(
+            self.pipeline.id,
+            'next_run_at',
+            None,
+        )
+
     @freeze_time('2014-03-01')
     def test_update_next_run_at_interval_never_ran(self):
         """Test that next_run_at = current time + interval."""
+        self.install_fixture('pipeline_schedule_interval')
+
         # Update next_run_at
         PipelineScheduleService.update_next_run_at_for_pipeline(
             self.pipeline.id,
@@ -150,6 +188,8 @@ class TestPipelineScheduleService(DatabaseTestCase):
 
     def test_lock_schedule_for_pipeline(self):
         """Test that the schedule gets locked."""
+        self.install_fixture('pipeline_schedule_interval')
+
         # Assert not locked
         self._assert_pipeline_attribute_equals(
             self.pipeline.id,
@@ -169,6 +209,8 @@ class TestPipelineScheduleService(DatabaseTestCase):
 
     def test_unlock_schedule_for_pipeline(self):
         """Test that the schedule gets unlocked."""
+        self.install_fixture('pipeline_schedule_interval')
+
         # Lock pipeline
         PipelineScheduleService.lock_schedule_for_pipeline(self.pipeline.id)
 
@@ -191,6 +233,8 @@ class TestPipelineScheduleService(DatabaseTestCase):
 
     def test_write_pipeline_schedule(self):
         """Test that we can write an entity to the repository."""
+        self.install_fixture('pipeline_schedule_interval')
+
         entity = PipelineScheduleMapper.to_entity(self.pipeline_schedule_interval)
         entity.schedule = '150'
 
