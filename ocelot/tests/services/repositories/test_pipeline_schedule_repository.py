@@ -7,10 +7,11 @@ from ocelot.tests import DatabaseTestCase
 class TestPipelineScheduleRepository(DatabaseTestCase):
     def setUp(self):
         self.install_fixture('pipeline')
-        self.install_fixture('pipeline_schedule_interval')
 
     def test_fetch_schedule_for_pipeline(self):
         """Test that a schedule can be fetched for a pipeline."""
+        self.install_fixture('pipeline_schedule_interval')
+
         self.assertEqual(
             PipelineScheduleRepository.fetch_schedule_for_pipeline(self.pipeline.id),
             self.pipeline_schedule_interval,
@@ -18,6 +19,8 @@ class TestPipelineScheduleRepository(DatabaseTestCase):
 
     def test_fetch_schedules_to_run(self):
         """Test that schedules that need to run (next_run_at <= now) are returned."""
+        self.install_fixture('pipeline_schedule_interval')
+
         self.assertEqual(
             PipelineScheduleRepository.fetch_schedules_to_run(),
             [
@@ -27,7 +30,6 @@ class TestPipelineScheduleRepository(DatabaseTestCase):
 
     def test_fetch_schedules_later(self):
         """Test that schedules that do not need to run (next_run_at > now) are not returned."""
-        self.uninstall_fixture('pipeline_schedule_interval')
         self.install_fixture('pipeline_schedule_interval', overrides={
             'next_run_at': datetime.utcnow() + timedelta(hours=6),
         })
@@ -37,9 +39,18 @@ class TestPipelineScheduleRepository(DatabaseTestCase):
             [],
         )
 
+    def test_fetch_schedules_manual(self):
+        """Test that manual schedules that do not need to run
+        (next_run_at == null) are not returned."""
+        self.install_fixture('pipeline_schedule_manual')
+
+        self.assertEqual(
+            PipelineScheduleRepository.fetch_schedules_to_run(),
+            [],
+        )
+
     def test_fetch_schedules_to_run_locked(self):
         """Test that locked schedules are not returned."""
-        self.uninstall_fixture('pipeline_schedule_interval')
         self.install_fixture('pipeline_schedule_interval', overrides={
             'locked': True,
         })
@@ -51,6 +62,8 @@ class TestPipelineScheduleRepository(DatabaseTestCase):
 
     def test_write_record(self):
         """Test that we can write a record to the database."""
+        self.install_fixture('pipeline_schedule_interval')
+
         self.assertNotEquals(
             PipelineScheduleRepository.fetch_schedule_for_pipeline(self.pipeline.id).schedule,
             '150',

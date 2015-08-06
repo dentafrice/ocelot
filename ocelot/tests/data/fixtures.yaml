@@ -35,6 +35,14 @@ pipeline_schedule_interval:
     type: interval
     next_run_at: !now -6h
 
+pipeline_schedule_manual:
+  model: PipelineScheduleStore
+  fields:
+    pipeline_id: !rel pipeline.id
+    schedule: null
+    type: manual
+    next_run_at: null
+
 url_task:
   model: TaskStore
   fields:
