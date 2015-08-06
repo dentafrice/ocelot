@@ -20,6 +20,27 @@
         "rss": {
             "type": "XMLRSSParseOperation"
         },
+        "crime_filter": {
+            "type": "DictFilterOperation",
+            "config": {
+                "config": {
+                    "type": "all",
+                    "rules": [
+                        {
+                            "type": "equals",
+                            "path": "$.category",
+                            "value": "Daily Crime Report"
+                        }
+                    ]
+                }
+            }
+        },
+        "new_filter": {
+            "type": "NewItemFilterOperation",
+            "config": {
+                "identifier": "taraval-items"
+            }
+        },
         "item_mapper": {
             "type": "DictMapperOperation",
             "config": {
@@ -96,6 +117,12 @@
             "rss"
         ],
         "rss": [
+            "crime_filter"
+        ],
+        "crime_filter": [
+            "new_filter"
+        ],
+        "new_filter": [
             "item_mapper"
         ],
         "item_mapper": [
