@@ -11,7 +11,7 @@
         "url_input": {
             "type": "URLInput",
             "config": {
-                "url": "https://gist.githubusercontent.com/dentafrice/0713ec11b44ae7df9873/raw/a1e1a99f45606a91839b939eb003d5490f871ba3/test.rss"
+                "url": "http://www.taraval.org/?feed=rss2"
             }
         },
         "xml_parser": {
